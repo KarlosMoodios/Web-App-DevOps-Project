@@ -18,8 +18,8 @@ spec:
         app: flask-app
     spec:
       containers:
-        - name: my-app
-          image: karlosmoodios/my-app
+        - name: order-tracking
+          image: karlosmoodios/order-tracking
           resources:
             limits:
               memory: 512Mi
