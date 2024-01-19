@@ -61,8 +61,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
 
-
-# Karl Moody DevOps pipeline milestones
+# Karl Moody Azure End-to-End DevOps Pipeline
 ## Milestone 1 - Set up the environment
 ### Task 1 - Set up GitHub
 - Fork the repository, including all branches from https://github.com/maya-a-iuga/Web-App-DevOps-Project.
@@ -119,7 +118,7 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
     - RUN - Install python packages from the requirements.txt using `pip install --trusted-host pypi.python.org -r requirements.txt`
     - EXPOSE - expose port 5000 on local machine
     - CMD - Startup commands for container
-    ### Task 2 - Build the Docker image
+### Task 2 - Build the Docker image
 - Build the Dockerfile into a Docker image using `docker build -t <name of the image> .`
 ### Task 3 - Run the Docker container locally
 - Use `docker run -d -p 5000:5000 <name of the image>`. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
@@ -139,3 +138,46 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 ### Task 6 - Documentation and cleanup
 - Delete any containers created during these tasks using the methods in task 5.
 - Remove both images from your system using `docker rmi <image id>`. To see a list of images use `docker images`.
+## Milestone 4 - Defining network services with IaC
+- See `README.md` and `definitions.md` in the `aks-terraform` directory.
+## Milestone 5 - Defining an AKS Cluster with IaC
+- See `README.md` and `definitions.md` in the `aks-terraform` directory.
+## Milestone 6 - Creating an AKS Cluster with IaC
+- See `README.md` and `definitions.md` in the `aks-terraform` directory.
+## Milestone 7 - Kubernetes Deployment to AKS
+### Task 1 - Kubernetes manifest definition - Deployment
+- Create `application-manifest.yaml` and create a Deployment including `apiVersion`, `kind`, `metadata` and `spec`
+- Set the values of `apiVersion`, `kind` and `metadata` to `apps/v1`, `Deployment` and `name: flask-app-deployment` respectively.
+- In `spec`: 
+    - specify 2 replicas. 
+    - In the `selector` and `template` fields, use the `matchLabels` field to define a label that uniquely identifies the application. In this instance `app: flask-app` has been used.
+    - Configure the manifest to point to the specific container housing the application. In this instance, `name` is set to `order-tracking` and the `image` is set to `karlosmoodios/order-tracking`
+    - `resources` - Set a resource limit for `memory` at `512Mi` and `cpu` to `1`
+    - Expose port `5000` for communication withing the AKS Cluster
+    - Implement the `rollingUpdates` strategy to facilitate seamless application updates. while configuring, ensure that `maxSurge` and `maxUnavailable` are both set to `1`. 
+### Task 2 - Kubernetes manifest definition - Service
+- Add a Service to the `application-manifest.yaml` file. To seperate a Deployment and Service definition in the same document, use `---`.
+- Create the fields `apiVersion`, `kind`, `metadata` and `spec` 
+- Set the values of `apiVersion`, `kind`, `metadata` to `v1`, `Service`, `name: flask-app-service` respectively.
+- in spec:
+    - Set the `type` to `ClusterIP`. ClusterIP is great for internal communications that don't need exposure to the outside world.
+    - Set the field `selector:` with the field `app:` to `flask-app`. This guarantees that traffic is efficiently directed to the correct pods when internal ccommunication happens within the cluster.
+    - Configure the `ports` field, setting the `protocol` to `TCP`, and the `port` to `80` for internal communications between nodes. Additionally, set the targetPort to 5000 which exposes the same port as the container. This will enable connection to the application on the cluster from the local machine.
+### Task 3 - Deploying Kubernetes manifests to AKS
+- `kubectl config get-contexts` will show a list of the contexts/clusters available. If the current context is not the AKS cluster, use `kubectl config set-context <name_of_cluster>` to change into the correct one to ensure the deployment is done in the intended environment.
+- Now use `kubectl apply -f application-manifest.yaml` to apply the application.
+- Confirm that the pods and services were correctly deployed using `kubectl get pods` and `kubectl get services`. 
+
+### Task 4 - Testing and validating deployments on AKS
+#### Testing deployments
+- If correctly deployed You will see something like the following images for each command:
+    - `kubectl get pods`: <br> <img src="./images/kubectl_get_pods.png">
+    - `kubectl get services`: <br> <img src="./images/kubectl_get_services.png">
+- To test the situation "if a pod goes down" and that another one will be created use `kubectl delete pod <name_of_pod>` It will delete the pod with that name and then create another in its place.<br><img src="./images/deleting_a_pod.png">
+#### Validating Deployments
+- Verify the health and status of the pods and services.
+- Run `kubectl port-forward <pod-name> 5000:5000` to establish a connection to your the desired pod on the local machine. This will enable access to the application through the local host at port 5000.
+- Open a web browser and enter into the URL field: `http://127.0.0.1:5000`
+- Orders list: <br> <img src="./images/orders.png">
+- Add new order: <br> <img src="./images/add_new_order.png">
+- Updated orders list: <br> <img src="./images/order_added.png">
