@@ -9,7 +9,47 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Technology Stack](#technology-stack)
 - [Contributors](#contributors)
 - [License](#license)
-
+- [Karl Moody Azure End-to-End DevOps Pipeline](#karl-moody-azure-end-to-end-devops-pipeline)
+- [Milestone 1 - Set up the environment](#milestone-1---set-up-the-environment)
+    - [Task 1 - Set up GitHub](#task-1---set-up-github)
+    - [Task 2 - Set up Azure](#task-2---set-up-azure)
+- [Milestone 2 - Version control](#milestone-2---version-control)
+    - [Task 1 - Clone the forked repository](#task-1---clone-the-forked-repository)
+    - [Task 2 - Create an Issue for the new column](#task-2---create-an-issue-for-the-new-column)
+    - [Task 3 - Create features branch](#task-3---create-features-branch)
+    - [Task 4 - Make code changes](#task-4---make-code-changes)
+    - [Task 5 - Push changes to remote branch](#task-5---push-changes-to-remote-branch)
+    - [Task 6 - Create pull request](#task-6---create-pull-request)
+    - [Task 7 - Merge pull request](#task-7---merge-pull-request)
+    - [Task 8 - Revert changes](#task-8---revert-changes)
+- [Milestone 3 - Containerization with Docker](#milestone-3---containerization-with-docker)
+    - [Task 1 - Build the Dockerfile](#task-1---build-the-dockerfile)
+    - [Task 2 - Build the Docker image](#task-2---build-the-docker-image)
+    - [Task 3 - Run the Docker container locally](#task-3---run-the-docker-container-locally)
+    - [Task 4 - Tag and push the Docker image to DockerHub](#task-4---tag-and-push-the-docker-image-to-dockerhub)
+    - [Task 5 - Confirm push was successful](#task-5---confirm-push-was-successful)
+    - [Task 6 - Documentation and cleanup](#task-6---documentation-and-cleanup)
+- [Milestone 4 - Defining network services with IaC](#milestone-4---defining-network-services-with-iac)
+- [Milestone 5 - Defining an AKS Cluster with IaC](#milestone-5---defining-an-aks-cluster-with-iac)
+- [Milestone 6 - Creating an AKS Cluster with IaC](#milestone-6---creating-an-aks-cluster-with-iac)
+- [Milestone 7 - Kubernetes Deployment to AKS](#milestone-7---kubernetes-deployment-to-aks)
+    - [Task 1 - Kubernetes manifest definition - Deployment](#task-1---kubernetes-manifest-definition---deployment)
+    - [Task 2 - Kubernetes manifest definition - Service](#task-2---kubernetes-manifest-definition---service)
+    - [Task 3 - Deploying Kubernetes manifests to AKS](#task-3---deploying-kubernetes-manifests-to-aks)
+    - [Task 4 - Testing and validating deployments on AKS](#task-4---testing-and-validating-deployments-on-aks)
+        - [Testing deployments](#testing-deployments)
+        - [Validating deployments](#validating-deployments)
+- [Milestone 8 - CI and CD Pipeline with Azure DevOps](#milestone-8---ci-and-cd-pipeline-with-azure-devops)
+    - [Task 1 - Create an Azure DevOps Project](#task-1---create-an-azure-devops-project)
+    - [Task 2 - Initiate Azure DevOps Pipeline Setup](#task-2---initiate-azure-devops-pipeline-setup)
+    - [Task 3 - Establish an Azure DevOps-AKS Connection](#task-3---establish-an-azure-devops-aks-connection)
+    - [Task 4 - Configure Pipeline for Docker Image Build and Push](#task-4---configure-pipeline-for-docker-image-build-and-push)
+    - [Task 5 - Establish an Azure DevOps-AKS-Connection](#task-5---establish-an-azure-devops-aks-connection)
+    - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
+    - [Task 7 - Testing and Validation of CI and CD Pipeline](#task-7---testing-and-validation-of-ci-and-cd-pipeline)
+    - [Task 8 - Documentation](#task-8---documentation)
+- [Milestone 9 - AKS Cluster Monitoring](#milestone-9---aks-cluster-monitoring)
+- [Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management](#milestone-10---aks-integration-with-azure-key-vault-for-secrets-management)
 ## Features
 
 - **Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
@@ -56,6 +96,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- [Karl Moody]([https://github.com/yourusername](https://github.com/KarlosMoodios))
 
 ## License
 
@@ -66,16 +107,14 @@ This project is licensed under the MIT License. For more details, refer to the [
 ### Task 1 - Set up GitHub
 - Fork the repository, including all branches from https://github.com/maya-a-iuga/Web-App-DevOps-Project.
 - Carefully read the README file to familiarise with the web application.
-- Ensure the app works and inspect its functionality.
-- 
 ### Task 2 - Set up Azure
-- Contact support to receive login credentials for Microsoft Azure.
-
+- Contact AICore support to receive login credentials for Microsoft Azure.
+- Save the details in a file as these will be needed throughout the project.
 ## Milestone 2 - Version control
-### Task 1 - Clone the forked repistory
+### Task 1 - Clone the forked repository
 Use `git clone` to clone the repo from your repository on your gitHub account.
 - `git clone https://github.com/<username>/Web-App-DevOps-Project.git`
-### Task 2 - Create 'Issue' for the new column
+### Task 2 - Create an Issue for the new column
 - GitHub doesn't turn on issues by default. So navigate to the repository settings, in the general tab search for issues and check the box.
 - On the same bar where the project settings button was found there will be an issues button near the far left of the navigation bar. Select that to view issues and at the top right select the green button 'New issue'.
 - Create a new issue and assign it to the appropriate developer, tasking them to create a new column for the order tracking web application. The column will be for the creation of a delivery date within the order tracking web app.
@@ -124,7 +163,7 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Use `docker run -d -p 5000:5000 <name of the image>`. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
 - Open a web browser and enter `http://127.0.0.1:5000` to access port 5000 on the local machine to interact with the web application in the container.
 - Confirm the appliocation works as intended.
-### Task 4 - Tag and push the Docker image to Docker Hub
+### Task 4 - Tag and push the Docker image to DockerHub
 - Login to docker using the cli with `docker login`
 - Use `docker tag <name of the image> <docker-hub-username>/<image-name>:<tag>` to tag the Docker image with the appropriate information.
 - Then use `docker push <username>/<name of the image>:<tag>`
@@ -181,3 +220,15 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Orders list: <br> <img src="./images/orders.png">
 - Add new order: <br> <img src="./images/add_new_order.png">
 - Updated orders list: <br> <img src="./images/order_added.png">
+## Milestone 8 - CI and CD Pipeline with Azure DevOps
+### Task 1 - Create an Azure DevOps Project
+### Task 2 - Initiate Azure DevOps Pipeline Setup
+### Task 3 - Establish an Azure DevOps-AKS Connection
+### Task 4 - Configure Pipeline for Docker Image Build and Push
+### Task 5 - Establish an Azure DevOps-AKS-Connection
+### Task 6 - Configure Pipeline for Kubernetes Deployment
+### Task 7 - Testing and Validation of CI and CD Pipeline
+### Task 8 - Documentation
+
+## Milestone 9 - AKS Cluster Monitoring
+## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
