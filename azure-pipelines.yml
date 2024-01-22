@@ -9,11 +9,32 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  containerapp-name: order-tracking
+  resourcegroup-name: networking_resource_group
+  dockerusername: karlosmoodios
+  imagename: order-tracking
+  environment-name: ordertracking-env
+  
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
+- task: Docker@2
+  displayName: buildAndPush
+  inputs:
+    containerRegistry: 'spn-docker-hub-registry'
+    repository: 'karlosmoodios/order-tracking'
+    command: 'buildAndPush'
+    Dockerfile: 'Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
+- task: AzureCLI@2
+  displayName: 'Azure CLI '
+  inputs:
+    azureSubscription: 'spn-04-29-23-azure-cxp'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az config set extension.use_dynamic_install=yes_without_prompt
+      
+      az containerapp up -n $(order-tracking) -g $(networking_resource_group) --image karlosmoodios)/order-tracking:latest --environment order-tracking-env --ingress external --target-port 80 --registry-username karlosmoodios --registry-password dckr_pat__HRRGpIOgvuSXc98BbR2taRVoYI --registry-server hub.docker.com --query properties.configuration.ingress.fqdn
   displayName: 'Run a multi-line script'
