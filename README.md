@@ -39,14 +39,14 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Task 4 - Testing and validating deployments on AKS](#task-4---testing-and-validating-deployments-on-aks)
         - [Testing deployments](#testing-deployments)
         - [Validating deployments](#validating-deployments)
-- [Milestone 8 - CI and CD Pipeline with Azure DevOps](#milestone-8---ci-and-cd-pipeline-with-azure-devops)
+- [Milestone 8 - CI/CD Pipeline with Azure DevOps](#milestone-8---cicd-pipeline-with-azure-devops)
     - [Task 1 - Create an Azure DevOps Project](#task-1---create-an-azure-devops-project)
     - [Task 2 - Initiate Azure DevOps Pipeline Setup](#task-2---initiate-azure-devops-pipeline-setup)
     - [Task 3 - Establish an Azure DevOps-AKS Connection](#task-3---establish-an-azure-devops-aks-connection)
     - [Task 4 - Configure Pipeline for Docker Image Build and Push](#task-4---configure-pipeline-for-docker-image-build-and-push)
     - [Task 5 - Establish an Azure DevOps-AKS-Connection](#task-5---establish-an-azure-devops-aks-connection)
     - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
-    - [Task 7 - Testing and Validation of CI and CD Pipeline](#task-7---testing-and-validation-of-ci-and-cd-pipeline)
+    - [Task 7 - Testing and Validation of CI/CD Pipeline](#task-7---testing-and-validation-of-cicd-pipeline)
     - [Task 8 - Documentation](#task-8---documentation)
 - [Milestone 9 - AKS Cluster Monitoring](#milestone-9---aks-cluster-monitoring)
 - [Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management](#milestone-10---aks-integration-with-azure-key-vault-for-secrets-management)
@@ -220,14 +220,14 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Orders list: <br> <img src="./images/orders.png">
 - Add new order: <br> <img src="./images/add_new_order.png">
 - Updated orders list: <br> <img src="./images/order_added.png">
-## Milestone 8 - CI and CD Pipeline with Azure DevOps
+## Milestone 8 - CI/CD Pipeline with Azure DevOps
 ### Task 1 - Create an Azure DevOps Project
 ### Task 2 - Initiate Azure DevOps Pipeline Setup
 ### Task 3 - Establish an Azure DevOps-AKS Connection
 ### Task 4 - Configure Pipeline for Docker Image Build and Push
 ### Task 5 - Establish an Azure DevOps-AKS-Connection
 ### Task 6 - Configure Pipeline for Kubernetes Deployment
-### Task 7 - Testing and Validation of CI and CD Pipeline
+### Task 7 - Testing and Validation of CI/CD Pipeline
 ### Task 8 - Documentation
 
 ## Milestone 9 - AKS Cluster Monitoring
