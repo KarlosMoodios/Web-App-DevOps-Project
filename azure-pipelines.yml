@@ -37,4 +37,4 @@ steps:
       az config set extension.use_dynamic_install=yes_without_prompt
       
       az containerapp up -n $(order-tracking) -g $(networking_resource_group) --image karlosmoodios)/order-tracking:latest --environment order-tracking-env --ingress external --target-port 80 --registry-username karlosmoodios --registry-password dckr_pat__HRRGpIOgvuSXc98BbR2taRVoYI --registry-server hub.docker.com --query properties.configuration.ingress.fqdn
-  displayName: 'Run a multi-line script'
+
