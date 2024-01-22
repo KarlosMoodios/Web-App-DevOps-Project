@@ -13,7 +13,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Docker Hub'
-    repository: 'karlosmoodios/Docker-Hub'
+    repository: 'karlosmoodios/azure-pipelines-order-tracking'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
