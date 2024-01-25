@@ -47,7 +47,6 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Task 5 - Establish an Azure DevOps-AKS-Connection](#task-5---establish-an-azure-devops-aks-connection)
     - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
     - [Task 7 - Testing and Validation of CI/CD Pipeline](#task-7---testing-and-validation-of-cicd-pipeline)
-    - [Task 8 - Documentation](#task-8---documentation)
 - [Milestone 9 - AKS Cluster Monitoring](#milestone-9---aks-cluster-monitoring)
 - [Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management](#milestone-10---aks-integration-with-azure-key-vault-for-secrets-management)
 ## Features
@@ -276,36 +275,32 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Once saved the Service connections should look like this: <br><img src="./images/azureaksclusterconnection3.png"><br> Now everything is set up for Azure DevOps and the AKS Cluster to communicate seamlessly.
 
 ### Task 6 - Configure Pipeline for Kubernetes Deployment
-- 
-<br><img src="./images">
+- Go to the pipeline, and click `Edit`. <br><img src="./images/releasepipeline1.png">
+- In the search panel on the right hand side, search for `Deploy to Kubernetes`. This task will enable `kubectl` commands inside of the AKS Cluster.<br><img src="./images/releasepipeline2.png"><br> Select `Deploy to Kubernetes`.
+    - Action type: `deploy`
+    - Service connection type: `Azure Resources Manager`
+    - Azure subscription: `Azure-AKSCluster`
+    - Resource group: `networking_resource_group`
+    - Kubernetes cluster: `terraform_aks_cluster`
+    - Manifest path: `./application-manifest.yaml`
+- <br><img src="./images/releasepipeline3.png"><br> 
+Once everything is entered correctly, click `Add`.
+- Click `Save` In the top right of the window and the azure-pipelines.yml should now look like this:<br><img src="./images/releasepipeline4.png"><br> The Outline area is the code that was added to the file. It is responsible for deploying any updates continuously to the cluster.
 
 ### Task 7 - Testing and Validation of CI/CD Pipeline
-- 
-<br><img src="./images">
-
-### Task 8 - Documentation
-- 
-<br><img src="./images">
+- Click on `Run` in the top right of the window to test the pipeline to ensure that everything works as expected. <br><img src="./images/rundeploymentpipeline1.png">
+- A menu will open, here, specify the `main` branch to run from. It is possible to run from a specific commit hash but in this case it will be left blank. Click `Run`. <br><img src="./images/rundeploymentpipeline2.png">
+- Once the job is queued, monitor its progress in real-time to ensure everything is working as expected with deployment. <br><img src="./images/rundeploymentpipeline3.png">
+- A screenshot of the Docker Image being built. <br><img src="./images/rundeploymentpipeline4.png">
+- Job posting of the completion of deployment to the AKS Cluster. <br><img src="./images/rundeploymentpipeline5.png">
+- Open a terminal and type `kubectl get pods`.<br><img src="./images/clustertesting1.png">
+- Then type `kubectl port-forward <name_of_pod> 5000:5000` <br><img src="./images/clustertesting2.png">
+- Open a web browser and go to `127.0.0.1:5000` to view the web app on the AKS Cluster. Test the functionality of the web app, click on `Add New Order`. <br><img src="./images/clustertesting3.png">
+- Enter relevant data in each field and make a note of what was entered to search for it after clicking add order. Click `Add Order`. <br><img src="./images/clustertesting4.png">
+- Use the `Next` page button and search for the updated order entry in the list. <br><img src="./images/clustertesting5.png">
 
 ## Milestone 9 - AKS Cluster Monitoring
 - 
 <br><img src="./images">
 
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
-
-
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Docker Hub'
-    repository: 'karlosmoodios/azure-pipelines-order-tracking'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: 'latest'
-- task: KubernetesManifest@1
-  inputs:
-    action: 'deploy'
-    connectionType: 'azureResourceManager'
-    azureSubscriptionConnection: 'Azure-AKSCluster'
-    azureResourceGroup: 'networking_resource_group'
-    kubernetesCluster: 'terraform_aks_cluster'
-    manifests: 'application-manifest.yaml'
