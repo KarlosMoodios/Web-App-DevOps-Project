@@ -42,7 +42,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Milestone 8 - CI/CD Pipeline with Azure DevOps](#milestone-8---cicd-pipeline-with-azure-devops)
     - [Task 1 - Create an Azure DevOps Project](#task-1---create-an-azure-devops-project)
     - [Task 2 - Initiate Azure DevOps Pipeline Setup](#task-2---initiate-azure-devops-pipeline-setup)
-    - [Task 3 - Establish an Azure DevOps-AKS Connection](#task-3---establish-an-azure-devops-aks-connection)
+    - [Task 3 - Establish an Azure DevOps-Docker Hub Connection](#task-3---establish-an-azure-devops-docker-hub-connection)
     - [Task 4 - Configure Pipeline for Docker Image Build and Push](#task-4---configure-pipeline-for-docker-image-build-and-push)
     - [Task 5 - Establish an Azure DevOps-AKS-Connection](#task-5---establish-an-azure-devops-aks-connection)
     - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
@@ -222,13 +222,90 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Updated orders list: <br> <img src="./images/order_added.png">
 ## Milestone 8 - CI/CD Pipeline with Azure DevOps
 ### Task 1 - Create an Azure DevOps Project
+- Login to Azure DevOps with AICore credentials
+- Create an Azure DevOps Project<br> <img src="./images/createnewdevopsproject.png">
+- Enter the name desired for the project. <br><img src="./images/projectcreateconfirm.png">
+- Confirm and create the project. <br> <img src="./images/projectcreated.png">
 ### Task 2 - Initiate Azure DevOps Pipeline Setup
-### Task 3 - Establish an Azure DevOps-AKS Connection
+- Select `Pipelines` from the left navigation pane and then select `New pipeline`.<br><img src="./images/pipelinecreatenew.png">
+- Choose where to store or find your code, in this instance, select GitHub. <br><img src="./images/pipelineselectgithub.png">
+- Select a repository to link to the pipeline.<br><img src="./images/pipelineselectrepo.png">
+- Configure the pipeline to be a starter pipeline. <br><img src="./images/pipelineselectstarter.png">
+- Click save and run to save the pipeline as `azure--pipelines.yml`.<br><img src="./images/pipelinesaveandrun.png">
+### Task 3 - Establish an Azure DevOps-Docker Hub Connection
+- Sign in to the Docker Hub account where the order-tracking image is stored. In the top right corner of the content, click on the logo resembling the account to reveal a dropdown menu and select `My Account`. <br><img src="./images/dockerpatstep1.png">
+- On the left navigation pane, select `Security` and then select `New Access Token`. <br><img src="./images/dockerpatstep2.png">
+- Enter the `name` of the token, select the `access permissions` desired for the token and click `Generate`. <br><img src="./images/dockerpatstep3.png">
+- The token will generate __ONLY ONCE!__ Make sure to copy this token and store it somewhere for the rest of this task. Once its used it can be deleted.<br><img src="./images/dockerpatstep4.png">
+- Go to the Azure Devops Project and select `Project settings` at the bottom left of the window.<br><img src="./images/dockerpatstep5.png">
+- In the settings, navigate to the left hand panel and select `Service connections`. Then select `New service connection` at the top right. <br><img src="./images/dockerpatstep6.png">
+- In the window that opens, type `Docker` in the search field and select `Docker Registry`. Click `Next`.<br><img src="./images/dockerpatstep7.png">
+- In the fields, enter the DockerID, password and assign the service connection a name. The password should be filled with the Personal Access Token generated from Docker earlier.  <br><img src="./images/dockerpatstep8.png"><br>Click save. There is now a service connection between Azure DevOps and Docker Hub.
 ### Task 4 - Configure Pipeline for Docker Image Build and Push
+- Access the homepage of the DevOps organisation and click `Organisation settings` at the bottom left of the window. <br><img src="./images/buildpipeline1.png">
+- Select billing from the left hand navigation and then click `Set up billing`.<br><img src="./images/buildpipeline2.png">
+- In the setup, choose the account to manage the billing as the Azure subcription managed by AICore and click save. This grants access to compute resources.
+- With billing set up, set the number of MS Hosted CI/CD paid parallel jobs to 2.<br><img src="./images/buildpipeline3.png">
+
+- Navigate to the pipeline where `azure-pipelines.yml` is saved. <br><img src="./images/buildpipeline4.png">
+- `trigger` is set to `main` so that whenever the main branch is updated it will run this pipeline.
+- Edit and remove the default config in the `steps` section.<br><img src="./images/buildpipeline5.png">
+- In the search tasks field on the type `docker` and select `Docker`. <br><img src="./images/buildpipeline6.png">
+    - In `Container registry`, select the service connection `Docker Hub`.
+    - In `Container repository`, enter the `<username>/<imagename>` of the Docker Hub repository.
+    - In `Command`, if not already selected, choose `BuildAndPush`.
+    - In `Tags`, replace the default entry with `latest`. This will ensure the latest version of the image is run whenever main is updated at the source repository.
+    - Any fields not mentioned should stay as they are such as:
+        - Dockerfile: Which is by default set to look at the root directory for a Dockerfile; where it should be stored.
+- Once everything is entered correctly, Click `Add`. <br><img src="./images/buildpipeline7.png">
+- There is now a new section entered into steps which reflects the data that was entered. Click `Save`.<br><img src="./images/buildpipeline8.png">
+    - When saving, a commit will be made and pushed to the working branch of the repository on GitHub.
+- To run the pipeline, navigate to the pipeline and click run in the top right hand cornver of the window. <br><img src="./images/buildpipeline9.png">
+- As the job starts, its possible there are insuffiecient permissions and a warning message may appear. Click `View` and `Permit` accordingly and the job should start.<br><img src="./images/buildpipeline9permit.png">
+- The job can be viewed in real-time by clicking on `Job`. <br><img src="./images/buildpipeline10.png">
+- When the job is complete it will look like this: <br><img src="./images/buildpipeline11.png">
+- Finally, navigate to Docker Hub to confirm the image was pushed to the repository. <br><img src="./images/buildpipeline12.png">
+
 ### Task 5 - Establish an Azure DevOps-AKS-Connection
+- As before with Azure-Docker service connection, create a new service connection by going to `Project settings` -> `Service connections.` Click `New service connection` and search for `Azure resource manager`.<br><img src="./images/azureaksclusterconnection.png">
+- Select `Workload Identity ferderation (automatic)` and click `Next`. <br><img src="./images/azureaksclusterconnection1.png">
+- Select the desired subscription to link to Azure DevOps.<br><img src="./images/azureaksclusterconnection2.png">
+    - When doing so a prompt will pop up asking for verification of the Microsoft account assosciated with the subscription for security purposes. If the window is closed before verifying, the process must be restarted.  <br><img src="./images/azureaksclusterconnection2-1.png"><br> Once verified, the subscription will be accessible by the following step.
+- Open the drop down menu and select the resource group associated with where the virtual network (AKS cluster) is stored. In this instance, `networking_resource_group`.  <br><img src="./images/azureaksclusterconnection2-2.png">
+- Give the service connection a name and click `Save`. <br><img src="./images/azureaksclusterconnection2-3.png">
+- Once saved the Service connections should look like this: <br><img src="./images/azureaksclusterconnection3.png"><br> Now everything is set up for Azure DevOps and the AKS Cluster to communicate seamlessly.
+
 ### Task 6 - Configure Pipeline for Kubernetes Deployment
+- 
+<br><img src="./images">
+
 ### Task 7 - Testing and Validation of CI/CD Pipeline
+- 
+<br><img src="./images">
+
 ### Task 8 - Documentation
+- 
+<br><img src="./images">
 
 ## Milestone 9 - AKS Cluster Monitoring
+- 
+<br><img src="./images">
+
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
+
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker Hub'
+    repository: 'karlosmoodios/azure-pipelines-order-tracking'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
+- task: KubernetesManifest@1
+  inputs:
+    action: 'deploy'
+    connectionType: 'azureResourceManager'
+    azureSubscriptionConnection: 'Azure-AKSCluster'
+    azureResourceGroup: 'networking_resource_group'
+    kubernetesCluster: 'terraform_aks_cluster'
+    manifests: 'application-manifest.yaml'
