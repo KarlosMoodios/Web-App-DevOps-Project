@@ -300,7 +300,11 @@ Once everything is entered correctly, click `Add`.
 - Use the `Next` page button and search for the updated order entry in the list. <br><img src="./images/clustertesting5.png">
 
 ## Milestone 9 - AKS Cluster Monitoring
-- 
-<br><img src="./images">
+- The cluster can be monitored on the azure portal. In the following image, it is possible to see the activity spiked in `Node pool CPU (max)`, `Node pool network in (max)` and `Node pool network out (max)`, all roughly at the same time. <br><img src="./images/clustermonitoring1.png"> At a glance this indicates the cluster is working well and is healthy, however, it doesn't offer any in-depth information. 
+- To enable `Container Insights`, go to `terraform_aks_cluster` in the azure portal: <br>`Home` > `All resources` > `terraform_aks_cluster`. <br><img src="./images/clustermonitoring2.png">
+- On the left navigation pane scroll down to and select `Insights`. <br><img src="images/clustermonitoring3.png"> <br> Then select `Configure monitoring`.
+- A window will open that looks like this: <br><img src="./images/clustermonitoring4.png"><br> Select configure at the bottom left. Set up may take a few minutes.
+- Once enabled it's possible to view the status of the cluster, including `Node CPU Utilisation`, `Node Memory Utilisation`, `Node Count` and an `Active Pod Count`, over a time range of the last 6 hours.<br><img src="./images/clustermonitoring6.png"><br>
+- This can also be viewed in real-time updates (live) as per the following image. <br><img src="./images/clustermonitoring5.png">
 
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
