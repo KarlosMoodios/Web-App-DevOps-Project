@@ -305,6 +305,65 @@ Once everything is entered correctly, click `Add`.
 - On the left navigation pane scroll down to and select `Insights`. <br><img src="images/clustermonitoring3.png"> <br> Then select `Configure monitoring`.
 - A window will open that looks like this: <br><img src="./images/clustermonitoring4.png"><br> Select configure at the bottom left. Set up may take a few minutes.
 - Once enabled it's possible to view the status of the cluster, including `Node CPU Utilisation`, `Node Memory Utilisation`, `Node Count` and an `Active Pod Count`, over a time range of the last 6 hours.<br><img src="./images/clustermonitoring6.png"><br>
-- This can also be viewed in real-time updates (live) as per the following image. <br><img src="./images/clustermonitoring5.png">
+- This can also be viewed in real-time updates (live) as per the following image. <br><img src="./images/clustermonitoring5.png"><br> 
+### Custom Monitoring
+- Container insights offers a customised monitoring experience which is built upon the Azure Monitor data platform and standard features. Common customisations include integrating Grafana and prometheus. <br> 
+    - Grafana is an open-source softweare which enables you to query, visualise, alert on and explore your metrics, logs and traces wherever they are stored. Grafana OSS provides you with tools to turn your time-series database (TSDB) data into insightful graphs and visualisations.<br> 
+    - Prometheus is an open-source technology which is designed to provide monitoring and alerting functionality for cloud-native environments, including Kubernetes. It is capable of collecting and storing metrics as time-series data and recording that information with a timestamp. It can also collect and record labels, which are optional key-value pairs. <br>Unfortuantely, due to the configuration fo this cluster, Grafana and Prometheus are not able to beused with this cluster.
+- Custom Metrics Charts can be created to be able to monitor specific aspects of the cluster. To do so, use the navigation pane on the left while inside the `terraform_aks_cluster` and select `Metrics`. Then select `New chart`. <br><img src="./images/clustermetrics1.png">
+    - In the new chart that appears, name the chart `Average CPU Usage`, then select the Metric drop down menu and choose `CPU Usage Percentage`. <br><img src="./images/clustermetrics1-1.png">
+    - `Avg` will be selected by default. Go ahead and click `Save to dashboard` at the top right of the chart and then select `Pin to dashboard`.<br><img src="./images/clustermetrics1-2.png">
+    - `Save to dashboard` > `Pin to dashboard` will open a window like the following image, select `Create new`, name the dashboard and select `Create and pin`.<br><img src="./images/clustermetrics1-3.png"><br> 
+    #### __Each time a new chart is created, pin it to this dashboard.__
+    - Create another chart named `Average Pod Count`. In the metric drop down, scroll down to pods and choose `Number of pods by phase`.<br><img src="./images/clustermetrics2.png"><br> Save and pin it.
+    - Create another chart named `Used Disk Percentage`. In the metric drop down, scroll down to pods and choose `Disk Used Percentage`.<br><img src="./images/clustermetrics3.png"><br> Save and pin it.
+    - Create another chart named `Bytes Read and Written per Second`. In the metric drop down, scroll down to pods and choose `Memory RSS Bytes`.<br><img src="./images/clustermetrics4.png"><br>Before Saving and pinning this chart, click on `Add metric` at the top left of the chart, select Memory RSS Bytes but this time change `Avg` to `Max`. <br><img src="./images/clustermetrics4-1.png">
+    - This chart should have two plots on the graph like so: <br><img src="./images/clustermetrics4-2.png"><br> Now click save and pin to dashboard for this chart.
+- From `Home`, use the navigation pane to get to `Dashboard`, select the drop down menu and choose the previously created custom dashboard: `AKS Cluster Metrics`. <br><img src="./images/clustermetrics5.png">
+- This will open the dashboard and show all of the charts in a way that is easy to visualise correlations between the data. <br><img src="./images/clustermetrics5-1.png">
+- The time-span can be changed to analyse operations that occured at different times from a range of the past 30 minutes to the past 30 days for each individual tile. Custom time frames can also be specified.<br><img src="./images/clustermetrics5-2.png">
 
+### Cluster Logging
+- Logs are queries that can be run to check a multitude of things about the cluster. There are five categories: 
+    - Alerts: This catgory helps to define limits such as conditions or thresholds for when specific events occur.
+    - Container logs: These queries enable you to focus on what exactly is happening inside your cluster. You can monitor application behaviour by filtering, searching and analysing your logs to troubleshoot issues.
+    - Find in table: A query best utilised to search through specific data in the logs. They can help locate information within large datasets much quicker than searching through the entire log.
+    - Availability: These offer queries to assess the uptime and availability of the AKS cluster by checking the health of nodes, pods and services.
+    - Performance: Includes queries that focus on assessing the performance of the AKs cluster. This may involve monitoring key metrics related to CPU and memory usage, network performance and other performance-related aspects.
+#### Average node CPU usage percentage per minute
+- Inside the AKS cluster, navigate to the monitoring section of the navigation panel and select logs. Search `avg` in the search bar and select `run` on `Avg node CPU usage percentage per minute` from the performance section in the search results.<br><img src="./images/clusterlogs1.png">
+- Once the query has finished running, click `Save`, name the query, categorise it as `Container` and click `Save`. <br><img src="./images/clusterlogs1-1.png">
+#### Average node memory usage percentage per minute
+- Click the `+` next to the query tab to open a new query. Select `Alerts`, double click `Avg node memory usage percentage per minute`.<br><img src="./images/clusterlogs2.png">
+- Click `Run`, once it's run click `Save` as before.<br><img src="./images/clusterlogs2-1.png">
+#### Pods count with phase
+- Open a new query and search for `Pods count with phase` in the search bar of a new query. Double-click the `List all the pods count with phase` option in the `Availability` section and press `Run`. <br><img src="./images/clusterlogs3.png"><br> Once it finishes running, click `Save`.
+#### Container logs
+- Open a new query and search for `Find a value in Container Logs Table`. Double-click it to load it into the editor and where the variable for `FindString` is, enter `warning`. <br><img src="./images/clusterlogs4.png"><br> Save the query for easy access later.
+#### Kubernetes events
+- Open a new query and search for `Kubernetes events`. Double-click to load it into the editor.  <br><img src="./images/clusterlogs5.png">
+- Click `Run` To visualise the results of specific events logged in the container for Kubernetes. <br><img src="./images/clusterlogs5-1.png"><br> Save the query.
+#### Alarms
+##### Creating new alarms
+Alarms ensure the user can detect and address issues within the parameters set promptly and efficiently, reducing the risk of disruptions and optimising the performance of the application. They are a fundamental component of any monitoring strategy.
+- Defining the alert conditions:  
+- Navigate to `Monitoring` > `Alerts` and click `View and set up`<br><img src="./images/alarms1.png"><br>
+- Two rules can be setup by default, and it is recommended to do so. Click the two slider buttons and then click `Save`.<br><img src="./images/alarms1-1.png"><br>
+- Click `+ Create` to create a new rule.<br><img src="./images/alarms2.png"><br>
+- Set the signal field to `Disk Used Percentage` and the threshold value to `90`. Then set the check every to `5 minutes` and the lookback period to `15 minutes`. <br><img src="./images/alarms2-1.png"><br> Then click `Next: Actions` at the bottom.
+- Choose `+ Create action group`. Choose the resource group, name the action group and choose a display name. The display name can only be up to 12 characters long. <br><img src="./images/alarms2-2.png"><br> Click `Next: Notifications`.
+- Set the notification type to `Email/SMS message/Push/Voice`, enter the email address to send these notifications to and select `OK`, name the alert message and click `Review + create`. <br><img src="./images/alarms2-3.png"><br>
+- Confirm everythingg is as it should be and click `Create`.<br><img src="./images/alarms2-4.png"><br>
+- If the action group created is present in the list, click `Next: Details`.<br><img src="./images/alarms2-5.png"><br>
+- Set the severity of the rule and name the alert rule. Click `Review + create`.<br><img src="./images/alarms2-6.png"><br>
+- Confirm the final stagesof creation to make sure everything is as desired. If so, click `Create`.<br><img src="./images/alarms2-7.png"><br>
+- Newly created rule: <br><img src="./images/alarms3.png"><br>
+##### Editing Current alarms
+- Adjust the alert rules for the Memory usage alert to trigger an alert event when the Memory usage reaches `80%`.<br>
+Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Set Percentage` alert and then click `Edit`.<br><img src="./images/alarms4.png"><br>
+- Select `Conditions`, change the threshold value from 95 to 80, click `Review + save`.<br><img src="./images/alarms4-1.png"><br>
+- Confirm the changes in the review screen and then click `Save`.<br><img src="./images/alarms4-2.png"><br>
+- Select the `CPU Usage Percentage` rule and click `Edit`. <br><img src="./images/alarms4-3.png"><br>
+- Select `Condition`, Change the threshold value to `80` and click `Review + save`.<br><img src="./images/alarms4-4.png"><br>
+- As before, confirmthe changes in the review screen and then click `Save`.<br><img src="./images/alarms4-5.png"><br>
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
