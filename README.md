@@ -367,3 +367,30 @@ Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Se
 - Select `Condition`, Change the threshold value to `80` and click `Review + save`.<br><img src="./images/alarms4-4.png"><br>
 - As before, confirmthe changes in the review screen and then click `Save`.<br><img src="./images/alarms4-5.png"><br>
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
+##### Create and Azure Key Vault. 
+- Navigate to the azure portal and search for `Key Vaults` in the search bar.<br><img src="./images/azurekeyvaults1.png"><br>
+- Click `+ Create` to create a key vault.<br><img src="./images/azurekeyvaults1-1.png"><br>
+- Choose an existing network group or create a new one. In this instance the `networking_resource_group` was chosen. `Name` the key vault and Set the `region`. Finally, click `Review + create`.<br><img src="./images/azurekeyvaults1-2.png"><br>
+- Review the details and press `Create` if everything is correct.<br><img src="./images/azurekeyvaults1-3.png"><br>
+- Deploying the service will take a few seconds.<br><img src="./images/azurekeyvaults1-4.png"><br>
+##### Assign Key Vault Administrator Role 
+- Once it's deployed, configure key vaults access control for the cluster. Go to the resource and select `Access control (IAM)`, click `+ Add` and then choose `Add role assignment`.<br><img src="./images/azurekeyvaults2.png"><br>
+- Select the role of `Key Vault administrator` and click `Next`.<br><img src="./images/azurekeyvaults2-1.png"><br>
+- In members, click `+ Select members` and a window will open on the right. Search the email address or username associated with the account that is to be set as the administrator and select the name from the list of results to add that user to selected members. Click `Select`. Then click `Next`. <br><img src="./images/azurekeyvaults2-2.png"><br>
+- If everything has been entered correctly, click `Review + assign`.<br><img src="./images/azurekeyvaults2-3.png"><br>
+##### Create Secrets in Key Vault
+- Now add the secrets for the application to the key vault. Go to the resource and search for `Secrets` in the left navigation panel under `Objects`. Click `+ Generate/Import`. <br><img src="./images/azurekeyvaults3.png"><br>
+- Enter the secret name, the secret and click `Create`.<br><img src="./images/azurekeyvaults3-1.png"><br>
+- Once added the secrets should look similar to this: <br><img src="./images/azurekeyvaults3-2.png"><br>
+##### Enable Managed Identity for AKS
+- To enable managed identity for an existing AKS cluster, use `az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity`, replacing `<resource-group>` with the resource group associated with the cluster and `<aks-cluster-name>` with the name of the cluster. A prompt will appear requeesting confirmation on performing the action, type `y` and press enter. You can make a note of your clientId here or do it in the next step.<br><img src="./images/azurekeyvaults4.png"><br>
+- The command to retrieve information about the managed identity is: `az aks show --resource-group <resource-group> --name <aks-cluster-name> --query identityProfile`<br><img src="./images/azurekeyvaults4-1.png"><br>
+- Use the following command to assign a RBAC role to the managed identity. `
+az role assignment create --role "Key Vault Secrets Officer" \
+  --assignee <managed-identity-client-id> \
+  --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}` <br><img src="./images/azurekeyvaults4-2.png"><br>
+    - Replace `<managed-identity-client-id>` with the managed identity client id. In `--scope`, replace `{subscription-id}`, `{resource-group}`, `{key-vault-name}` with their corresponding values.
+- <br><img src="./images/azurekeyvaults4-2.png"><br>
+- <br><img src="./images/azurekeyvaults4-2.png"><br>
+- <br><img src="./images/azurekeyvaults4-2.png"><br>
+
