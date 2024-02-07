@@ -48,7 +48,21 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
     - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
     - [Task 7 - Testing and Validation of CI/CD Pipeline](#task-7---testing-and-validation-of-cicd-pipeline)
 - [Milestone 9 - AKS Cluster Monitoring](#milestone-9---aks-cluster-monitoring)
+    - [Task 1 - Enable Container Insights for AKS](#task-1---enable-container-insights-for-aks)
+    - [Task 2 - Create Metrics Explorer Charts](#task-2---create-metrics-explorer-charts)
+    - [Task 3 - Log Analytics Configuration](#task-3---log-analytics-configuration)
+    - [Task 4 - Set Up Disk Used Percentage Alarm](#task-4---set-up-disk-used-percentage-alarm)
+    - [Task 5 - Modify CPU and Memory Alert Rules](#task-5---modify-cpu-and-memory-alert-rules)
+    
 - [Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management](#milestone-10---aks-integration-with-azure-key-vault-for-secrets-management)
+    - [Task 1 - Create an Azure Key Vault](#task-1---create-an-azure-key-vault)
+    - [Task 2 - Assign Key Vault Administrator Role](#task-2---assign-key-vault-administrator-role)
+    - [Task 3 - Create Secrets in Key Vault](#task-3---create-secrets-in-key-vault)
+    - [Task 4 - Enable Managed Identity for AKS](#task-4---enable-managed-identity-for-aks)
+    - [Task 5 - Assign Permissions to Managed Identity](#task-5---assign-permissions-to-managed-identity)
+    - [Task 6 - Update the Application Code](#task-6---update-the-application-code)
+    - [Task 7 - End-to-End Testing in AKS](#task-7---end-to-end-testing-in-aks)
+    
 ## Features
 
 - **Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
@@ -300,21 +314,23 @@ Once everything is entered correctly, click `Add`.
 - Use the `Next` page button and search for the updated order entry in the list. <br><img src="./images/clustertesting5.png">
 
 ## Milestone 9 - AKS Cluster Monitoring
+### Task 1 - Enable Container Insights for AKS
 - The cluster can be monitored on the azure portal. In the following image, it is possible to see the activity spiked in `Node pool CPU (max)`, `Node pool network in (max)` and `Node pool network out (max)`, all roughly at the same time. <br><img src="./images/clustermonitoring1.png"> At a glance this indicates the cluster is working well and is healthy, however, it doesn't offer any in-depth information. 
 - To enable `Container Insights`, go to `terraform_aks_cluster` in the azure portal: <br>`Home` > `All resources` > `terraform_aks_cluster`. <br><img src="./images/clustermonitoring2.png">
 - On the left navigation pane scroll down to and select `Insights`. <br><img src="images/clustermonitoring3.png"> <br> Then select `Configure monitoring`.
 - A window will open that looks like this: <br><img src="./images/clustermonitoring4.png"><br> Select configure at the bottom left. Set up may take a few minutes.
 - Once enabled it's possible to view the status of the cluster, including `Node CPU Utilisation`, `Node Memory Utilisation`, `Node Count` and an `Active Pod Count`, over a time range of the last 6 hours.<br><img src="./images/clustermonitoring6.png"><br>
 - This can also be viewed in real-time updates (live) as per the following image. <br><img src="./images/clustermonitoring5.png"><br> 
-### Custom Monitoring
+##### Custom Monitoring
 - Container insights offers a customised monitoring experience which is built upon the Azure Monitor data platform and standard features. Common customisations include integrating Grafana and prometheus. <br> 
     - Grafana is an open-source softweare which enables you to query, visualise, alert on and explore your metrics, logs and traces wherever they are stored. Grafana OSS provides you with tools to turn your time-series database (TSDB) data into insightful graphs and visualisations.<br> 
     - Prometheus is an open-source technology which is designed to provide monitoring and alerting functionality for cloud-native environments, including Kubernetes. It is capable of collecting and storing metrics as time-series data and recording that information with a timestamp. It can also collect and record labels, which are optional key-value pairs. <br>Unfortuantely, due to the configuration fo this cluster, Grafana and Prometheus are not able to beused with this cluster.
+### Task 2 - Create Metrics Explorer Charts
 - Custom Metrics Charts can be created to be able to monitor specific aspects of the cluster. To do so, use the navigation pane on the left while inside the `terraform_aks_cluster` and select `Metrics`. Then select `New chart`. <br><img src="./images/clustermetrics1.png">
     - In the new chart that appears, name the chart `Average CPU Usage`, then select the Metric drop down menu and choose `CPU Usage Percentage`. <br><img src="./images/clustermetrics1-1.png">
     - `Avg` will be selected by default. Go ahead and click `Save to dashboard` at the top right of the chart and then select `Pin to dashboard`.<br><img src="./images/clustermetrics1-2.png">
     - `Save to dashboard` > `Pin to dashboard` will open a window like the following image, select `Create new`, name the dashboard and select `Create and pin`.<br><img src="./images/clustermetrics1-3.png"><br> 
-    #### __Each time a new chart is created, pin it to this dashboard.__
+    __Each time a new chart is created, pin it to this dashboard.__
     - Create another chart named `Average Pod Count`. In the metric drop down, scroll down to pods and choose `Number of pods by phase`.<br><img src="./images/clustermetrics2.png"><br> Save and pin it.
     - Create another chart named `Used Disk Percentage`. In the metric drop down, scroll down to pods and choose `Disk Used Percentage`.<br><img src="./images/clustermetrics3.png"><br> Save and pin it.
     - Create another chart named `Bytes Read and Written per Second`. In the metric drop down, scroll down to pods and choose `Memory RSS Bytes`.<br><img src="./images/clustermetrics4.png"><br>Before Saving and pinning this chart, click on `Add metric` at the top left of the chart, select Memory RSS Bytes but this time change `Avg` to `Max`. <br><img src="./images/clustermetrics4-1.png">
@@ -323,7 +339,7 @@ Once everything is entered correctly, click `Add`.
 - This will open the dashboard and show all of the charts in a way that is easy to visualise correlations between the data. <br><img src="./images/clustermetrics5-1.png">
 - The time-span can be changed to analyse operations that occured at different times from a range of the past 30 minutes to the past 30 days for each individual tile. Custom time frames can also be specified.<br><img src="./images/clustermetrics5-2.png">
 
-### Cluster Logging
+### Task 3 - Log Analytics Configuration
 - Logs are queries that can be run to check a multitude of things about the cluster. There are five categories: 
     - Alerts: This catgory helps to define limits such as conditions or thresholds for when specific events occur.
     - Container logs: These queries enable you to focus on what exactly is happening inside your cluster. You can monitor application behaviour by filtering, searching and analysing your logs to troubleshoot issues.
@@ -343,8 +359,8 @@ Once everything is entered correctly, click `Add`.
 #### Kubernetes events
 - Open a new query and search for `Kubernetes events`. Double-click to load it into the editor.  <br><img src="./images/clusterlogs5.png">
 - Click `Run` To visualise the results of specific events logged in the container for Kubernetes. <br><img src="./images/clusterlogs5-1.png"><br> Save the query.
-#### Alarms
-##### Creating new alarms
+### Task 4 - Set Up Disk Used Percentage Alarm
+#### Creating new alarms
 Alarms ensure the user can detect and address issues within the parameters set promptly and efficiently, reducing the risk of disruptions and optimising the performance of the application. They are a fundamental component of any monitoring strategy.
 - Defining the alert conditions:  
 - Navigate to `Monitoring` > `Alerts` and click `View and set up`<br><img src="./images/alarms1.png"><br>
@@ -358,7 +374,8 @@ Alarms ensure the user can detect and address issues within the parameters set p
 - Set the severity of the rule and name the alert rule. Click `Review + create`.<br><img src="./images/alarms2-6.png"><br>
 - Confirm the final stagesof creation to make sure everything is as desired. If so, click `Create`.<br><img src="./images/alarms2-7.png"><br>
 - Newly created rule: <br><img src="./images/alarms3.png"><br>
-##### Editing Current alarms
+### Task 5 - Modify CPU and Memory Alert Rules
+#### Editing Current alarms
 - Adjust the alert rules for the Memory usage alert to trigger an alert event when the Memory usage reaches `80%`.<br>
 Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Set Percentage` alert and then click `Edit`.<br><img src="./images/alarms4.png"><br>
 - Select `Conditions`, change the threshold value from 95 to 80, click `Review + save`.<br><img src="./images/alarms4-1.png"><br>
@@ -366,31 +383,45 @@ Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Se
 - Select the `CPU Usage Percentage` rule and click `Edit`. <br><img src="./images/alarms4-3.png"><br>
 - Select `Condition`, Change the threshold value to `80` and click `Review + save`.<br><img src="./images/alarms4-4.png"><br>
 - As before, confirmthe changes in the review screen and then click `Save`.<br><img src="./images/alarms4-5.png"><br>
+
 ## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
-##### Create and Azure Key Vault. 
+### Task 1 - Create an Azure Key Vault
 - Navigate to the azure portal and search for `Key Vaults` in the search bar.<br><img src="./images/azurekeyvaults1.png"><br>
 - Click `+ Create` to create a key vault.<br><img src="./images/azurekeyvaults1-1.png"><br>
 - Choose an existing network group or create a new one. In this instance the `networking_resource_group` was chosen. `Name` the key vault and Set the `region`. Finally, click `Review + create`.<br><img src="./images/azurekeyvaults1-2.png"><br>
 - Review the details and press `Create` if everything is correct.<br><img src="./images/azurekeyvaults1-3.png"><br>
 - Deploying the service will take a few seconds.<br><img src="./images/azurekeyvaults1-4.png"><br>
-##### Assign Key Vault Administrator Role 
+### Task 2 - Assign Key Vault Administrator Role 
 - Once it's deployed, configure key vaults access control for the cluster. Go to the resource and select `Access control (IAM)`, click `+ Add` and then choose `Add role assignment`.<br><img src="./images/azurekeyvaults2.png"><br>
 - Select the role of `Key Vault administrator` and click `Next`.<br><img src="./images/azurekeyvaults2-1.png"><br>
 - In members, click `+ Select members` and a window will open on the right. Search the email address or username associated with the account that is to be set as the administrator and select the name from the list of results to add that user to selected members. Click `Select`. Then click `Next`. <br><img src="./images/azurekeyvaults2-2.png"><br>
 - If everything has been entered correctly, click `Review + assign`.<br><img src="./images/azurekeyvaults2-3.png"><br>
-##### Create Secrets in Key Vault
+### Task 3 - Create Secrets in Key Vault
 - Now add the secrets for the application to the key vault. Go to the resource and search for `Secrets` in the left navigation panel under `Objects`. Click `+ Generate/Import`. <br><img src="./images/azurekeyvaults3.png"><br>
 - Enter the secret name, the secret and click `Create`.<br><img src="./images/azurekeyvaults3-1.png"><br>
 - Once added the secrets should look similar to this: <br><img src="./images/azurekeyvaults3-2.png"><br>
-##### Enable Managed Identity for AKS
+### Task 4 - Enable Managed Identity for AKS
 - To enable managed identity for an existing AKS cluster, use `az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity`, replacing `<resource-group>` with the resource group associated with the cluster and `<aks-cluster-name>` with the name of the cluster. A prompt will appear requeesting confirmation on performing the action, type `y` and press enter. You can make a note of your clientId here or do it in the next step.<br><img src="./images/azurekeyvaults4.png"><br>
 - The command to retrieve information about the managed identity is: `az aks show --resource-group <resource-group> --name <aks-cluster-name> --query identityProfile`<br><img src="./images/azurekeyvaults4-1.png"><br>
+### Task 5 - Assign Permissions to Managed Identity
 - Use the following command to assign a RBAC role to the managed identity. `
 az role assignment create --role "Key Vault Secrets Officer" \
   --assignee <managed-identity-client-id> \
-  --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}` <br><img src="./images/azurekeyvaults4-2.png"><br>
+  --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}` <br><img src="./images/azurekeyvaults5.png"><br>
     - Replace `<managed-identity-client-id>` with the managed identity client id. In `--scope`, replace `{subscription-id}`, `{resource-group}`, `{key-vault-name}` with their corresponding values.
-- <br><img src="./images/azurekeyvaults4-2.png"><br>
-- <br><img src="./images/azurekeyvaults4-2.png"><br>
-- <br><img src="./images/azurekeyvaults4-2.png"><br>
+### Task 6 - Update the Application Code
+- Update the `requirements.txt` to add `azure.identity` and `azure.keyvault.secrets` when building the Docker image. <br><img src="./images/azurekeyvaults6.png"><br>
+- Update `app.py` to access the secrets in the Key Vault. 
+    - Firstly, add the imports required to access the necessary modules. 
+    - Secondly, connect to the Key Vault, set up the key vault with the Managed Identity and create the variables for the secrets. 
+    - Finally, assign the secrets to the appropriate variables for connecting to the database, and delete the hardcoded ones. (The ones that are currently commented out)
+    <br><img src="./images/azurekeyvaults6-1.png"><br>
+- Once completed, the protected code will look like this: <br><img src="./images/azurekeyvaults6-2.png"><br>
+### Task 7 - End-to-End Testing in AKS
+- To confirm the changes have been successful, use git to add, commit and push the changes to the GitHub repository. Any updates on the main branch will trigger the Azure Pipeline to run. 
+    - Then use `kubectl port-forward <name of pod> 5000:5000`. 
+    - Use a browser as before to connect to `127.0.0.1:5000` and confirm that the application is working as expected.
+    <br><img src="./images/end-to-endtesting1.png"><br>
+    <br><img src="./images/end-to-endtesting1-1.png"><br>
+    <br><img src="./images/end-to-endtesting1-2.png"><br>
 
