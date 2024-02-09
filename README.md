@@ -7,77 +7,43 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Technology Stack](#technology-stack)
+- [Set up the environment](#set-up-the-environment)
+- [Version control](#version-control)
+- [Containerization with Docker](#containerization-with-docker)
+- [Defining network services with IaC](#defining-network-services-with-iac)
+- [Defining an AKS Cluster with IaC](#defining-an-aks-cluster-with-iac)
+- [Creating an AKS Cluster with IaC](#creating-an-aks-cluster-with-iac)
+- [Kubernetes Deployment to AKS](#kubernetes-deployment-to-aks)
+- [CI/CD Pipeline with Azure DevOps](#cicd-pipeline-with-azure-devops)
+- [AKS Cluster Monitoring](#aks-cluster-monitoring)
+- [AKS Integration with Azure Key Vault for Secrets Management](#aks-integration-with-azure-key-vault-for-secrets-management)
 - [Contributors](#contributors)
 - [License](#license)
-- [Karl Moody Azure End-to-End DevOps Pipeline](#karl-moody-azure-end-to-end-devops-pipeline)
-- [Milestone 1 - Set up the environment](#milestone-1---set-up-the-environment)
-    - [Task 1 - Set up GitHub](#task-1---set-up-github)
-    - [Task 2 - Set up Azure](#task-2---set-up-azure)
-- [Milestone 2 - Version control](#milestone-2---version-control)
-    - [Task 1 - Clone the forked repository](#task-1---clone-the-forked-repository)
-    - [Task 2 - Create an Issue for the new column](#task-2---create-an-issue-for-the-new-column)
-    - [Task 3 - Create features branch](#task-3---create-features-branch)
-    - [Task 4 - Make code changes](#task-4---make-code-changes)
-    - [Task 5 - Push changes to remote branch](#task-5---push-changes-to-remote-branch)
-    - [Task 6 - Create pull request](#task-6---create-pull-request)
-    - [Task 7 - Merge pull request](#task-7---merge-pull-request)
-    - [Task 8 - Revert changes](#task-8---revert-changes)
-- [Milestone 3 - Containerization with Docker](#milestone-3---containerization-with-docker)
-    - [Task 1 - Build the Dockerfile](#task-1---build-the-dockerfile)
-    - [Task 2 - Build the Docker image](#task-2---build-the-docker-image)
-    - [Task 3 - Run the Docker container locally](#task-3---run-the-docker-container-locally)
-    - [Task 4 - Tag and push the Docker image to DockerHub](#task-4---tag-and-push-the-docker-image-to-dockerhub)
-    - [Task 5 - Confirm push was successful](#task-5---confirm-push-was-successful)
-    - [Task 6 - Documentation and cleanup](#task-6---documentation-and-cleanup)
-- [Milestone 4 - Defining network services with IaC](#milestone-4---defining-network-services-with-iac)
-- [Milestone 5 - Defining an AKS Cluster with IaC](#milestone-5---defining-an-aks-cluster-with-iac)
-- [Milestone 6 - Creating an AKS Cluster with IaC](#milestone-6---creating-an-aks-cluster-with-iac)
-- [Milestone 7 - Kubernetes Deployment to AKS](#milestone-7---kubernetes-deployment-to-aks)
-    - [Task 1 - Kubernetes manifest definition - Deployment](#task-1---kubernetes-manifest-definition---deployment)
-    - [Task 2 - Kubernetes manifest definition - Service](#task-2---kubernetes-manifest-definition---service)
-    - [Task 3 - Deploying Kubernetes manifests to AKS](#task-3---deploying-kubernetes-manifests-to-aks)
-    - [Task 4 - Testing and validating deployments on AKS](#task-4---testing-and-validating-deployments-on-aks)
-        - [Testing deployments](#testing-deployments)
-        - [Validating deployments](#validating-deployments)
-- [Milestone 8 - CI/CD Pipeline with Azure DevOps](#milestone-8---cicd-pipeline-with-azure-devops)
-    - [Task 1 - Create an Azure DevOps Project](#task-1---create-an-azure-devops-project)
-    - [Task 2 - Initiate Azure DevOps Pipeline Setup](#task-2---initiate-azure-devops-pipeline-setup)
-    - [Task 3 - Establish an Azure DevOps-Docker Hub Connection](#task-3---establish-an-azure-devops-docker-hub-connection)
-    - [Task 4 - Configure Pipeline for Docker Image Build and Push](#task-4---configure-pipeline-for-docker-image-build-and-push)
-    - [Task 5 - Establish an Azure DevOps-AKS-Connection](#task-5---establish-an-azure-devops-aks-connection)
-    - [Task 6 - Configure Pipeline for Kubernetes Deployment](#task-6---configure-pipeline-for-kubernetes-deployment)
-    - [Task 7 - Testing and Validation of CI/CD Pipeline](#task-7---testing-and-validation-of-cicd-pipeline)
-- [Milestone 9 - AKS Cluster Monitoring](#milestone-9---aks-cluster-monitoring)
-    - [Task 1 - Enable Container Insights for AKS](#task-1---enable-container-insights-for-aks)
-    - [Task 2 - Create Metrics Explorer Charts](#task-2---create-metrics-explorer-charts)
-    - [Task 3 - Log Analytics Configuration](#task-3---log-analytics-configuration)
-    - [Task 4 - Set Up Disk Used Percentage Alarm](#task-4---set-up-disk-used-percentage-alarm)
-    - [Task 5 - Modify CPU and Memory Alert Rules](#task-5---modify-cpu-and-memory-alert-rules)
-    
-- [Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management](#milestone-10---aks-integration-with-azure-key-vault-for-secrets-management)
-    - [Task 1 - Create an Azure Key Vault](#task-1---create-an-azure-key-vault)
-    - [Task 2 - Assign Key Vault Administrator Role](#task-2---assign-key-vault-administrator-role)
-    - [Task 3 - Create Secrets in Key Vault](#task-3---create-secrets-in-key-vault)
-    - [Task 4 - Enable Managed Identity for AKS](#task-4---enable-managed-identity-for-aks)
-    - [Task 5 - Assign Permissions to Managed Identity](#task-5---assign-permissions-to-managed-identity)
-    - [Task 6 - Update the Application Code](#task-6---update-the-application-code)
-    - [Task 7 - End-to-End Testing in AKS](#task-7---end-to-end-testing-in-aks)
     
 ## Features
 
-- **Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
-  
-![Screenshot 2023-08-31 at 15 48 48](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/3a3bae88-9224-4755-bf62-567beb7bf692)
+**Order List:** View a comprehensive list of orders including details like date UUID, user ID, card number, store code, product code, product quantity, order date, and shipping date.
+-   <details>
+    <summary>Order List</summary>
 
-- **Pagination:** Easily navigate through multiple pages of orders using the built-in pagination feature.
-  
-![Screenshot 2023-08-31 at 15 49 08](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/d92a045d-b568-4695-b2b9-986874b4ed5a)
+    ![Screenshot 2023-08-31 at 15 48 48](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/3a3bae88-9224-4755-bf62-567beb7bf692)
+    </details>
 
-- **Add New Order:** Fill out a user-friendly form to add new orders to the system with necessary information.
-  
-![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
+**Pagination:** Easily navigate through multiple pages of orders using the built-in pagination feature.
+-   <details>
+    <summary>Pagination</summary>
 
-- **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
+    ![Screenshot 2023-08-31 at 15 49 08](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/d92a045d-b568-4695-b2b9-986874b4ed5a)
+    </details>
+
+**Add New Order:** Fill out a user-friendly form to add new orders to the system with necessary information. 
+-   <details>
+    <summary>Add New Order</summary>
+
+    ![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
+    </details>
+
+**Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
 
 ## Getting Started
 
@@ -106,34 +72,38 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
-## Contributors 
+## Set up the environment
+Description
+<details>
+<summary>Step-by-step guide</summary>
 
-- [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
-- [Karl Moody]([https://github.com/yourusername](https://github.com/KarlosMoodios))
-
-## License
-
-This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
-
-# Karl Moody Azure End-to-End DevOps Pipeline
-## Milestone 1 - Set up the environment
 ### Task 1 - Set up GitHub
 - Fork the repository, including all branches from https://github.com/maya-a-iuga/Web-App-DevOps-Project.
 - Carefully read the README file to familiarise with the web application.
 ### Task 2 - Set up Azure
 - Contact AICore support to receive login credentials for Microsoft Azure.
 - Save the details in a file as these will be needed throughout the project.
-## Milestone 2 - Version control
+</details>
+
+## Version control
+Description
+
+<details>
+<summary>Step-by-step guide</summary>
+
 ### Task 1 - Clone the forked repository
 Use `git clone` to clone the repo from your repository on your gitHub account.
 - `git clone https://github.com/<username>/Web-App-DevOps-Project.git`
+
 ### Task 2 - Create an Issue for the new column
 - GitHub doesn't turn on issues by default. So navigate to the repository settings, in the general tab search for issues and check the box.
 - On the same bar where the project settings button was found there will be an issues button near the far left of the navigation bar. Select that to view issues and at the top right select the green button 'New issue'.
 - Create a new issue and assign it to the appropriate developer, tasking them to create a new column for the order tracking web application. The column will be for the creation of a delivery date within the order tracking web app.
+
 ### Task 3 - Create features branch
 - Create a new branch on the local repository named `feature/add-delivery-date`.
-- Use `git checkout -b feature/add-delivery-date` from the main branch. This will take you from the main branch, copy everything in the main branch and checkout to the new branch. The `-b` flag tells git to run `git branch` before `git checkout`
+- Use `git checkout -b feature/add-delivery-date` from the main branch. This will take you from the main branch, copy everything in the main branch and checkout to the new branch. The `-b` flag tells git to run `git branch` before `git checkout`.
+
 ### Task 4 - Make code changes
 - Make code changes to app.py and orders.html to reflect the new column across the web application.
 - The changes needed to be made are in the following locations:
@@ -143,15 +113,19 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
     - `orders.html`:
         - The `div class="tab-container"` needs a table header `th` and a table data `td` for delivery date, inside the `table class="order-table"`.
         - The `div class="content` needs a `label for` and an `input type` for delivery date.
+
 ### Task 5 - Push changes to remote branch
 - Now the column has been added, push the changes to the remote origin. 
 - `git push --set-upstream origin feature/add-delivery-date` will create a new branch on the remote repository on GitHub.
+
 ### Task 6 - Create pull request
 - Create a pull request to pull the new features branch into the main branch on the forked repository to initiate proceedings to merge the two together.
+
 ### Task 7 - Merge pull request
 - Review the changes to the code in the new branch
 - If there are no conflicts merge them in 
 - Delete the branch once its compeleted.
+
 ### Task 8 - Revert changes
 - Create a new branch `called revert-deliver-date` while in the `main` branch.
 - Use `git checkout -b revert-delivery-date`
@@ -159,8 +133,15 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Use `git revert <commit-hash>` to undo the commit
 - Push the changes to the remote branch using `git push --set-upstream origin revert-delivery-date`
 - Create a pull request and merge the `revert-delivery-date` branch into `main` branch. Approve and merge the pull request.
-## Milestone 3 - Containerization with Docker
-### Task 1 - Build the Dockerfile
+</details>
+
+## Containerization with Docker
+Description
+
+<details>
+<summary>Step-by-step guide</summary>
+
+### Build the Dockerfile
 - Build the Dockerfile 
     - FROM - Use an official Python runtime `python:3.8-slim`
     - WORKDIR - Set the working directory in the container `/app`
@@ -170,33 +151,65 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
     - RUN - Install python packages from the requirements.txt using `pip install --trusted-host pypi.python.org -r requirements.txt`
     - EXPOSE - expose port 5000 on local machine
     - CMD - Startup commands for container
-### Task 2 - Build the Docker image
+
+### Build the Docker image
 - Build the Dockerfile into a Docker image using `docker build -t <name of the image> .`
-### Task 3 - Run the Docker container locally
+
+### Run the Docker container locally
 - Use `docker run -d -p 5000:5000 <name of the image>`. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
 - Open a web browser and enter `http://127.0.0.1:5000` to access port 5000 on the local machine to interact with the web application in the container.
 - Confirm the appliocation works as intended.
-### Task 4 - Tag and push the Docker image to DockerHub
+
+### Tag and push the Docker image to DockerHub
 - Login to docker using the cli with `docker login`
 - Use `docker tag <name of the image> <docker-hub-username>/<image-name>:<tag>` to tag the Docker image with the appropriate information.
 - Then use `docker push <username>/<name of the image>:<tag>`
-### Task 5 - Confirm push was successful
+
+### Confirm push was successful
 - Login to your Docker Hub account through a web browser to confirm that your docker image was successfully pushed to Docker Hub
 - Stop the Docker container on your local system, using `docker stop <name>`. To see the list of all containers use `docker ps -a`. 
 - Once stopped, get the Id or the name of the container to delete and then Use `docker rm <name>` or `docker rm <id>` to remove it completely.
 - Pull the docker image from docker hub and test that it works as expected. Use `docker pull <username>/<name of the image>:<tag>`.
 - Use `docker run -d -p 5000:5000 <username>/<name of the image>` to run the image from Docker Hub and check the image works the same.
 - Stop the container and remove the container. 
-### Task 6 - Documentation and cleanup
+
+### Task 6 - Cleanup
 - Delete any containers created during these tasks using the methods in task 5.
 - Remove both images from your system using `docker rmi <image id>`. To see a list of images use `docker images`.
-## Milestone 4 - Defining network services with IaC
+</details>
+
+## Defining network services with IaC
+Description
+
 - See `README.md` and `definitions.md` in the `aks-terraform` directory.
-## Milestone 5 - Defining an AKS Cluster with IaC
+<details>
+<summary>Step-by-step guide</summary>
+</details>
+
+## Defining an AKS Cluster with IaC
+Description
+
 - See `README.md` and `definitions.md` in the `aks-terraform` directory.
-## Milestone 6 - Creating an AKS Cluster with IaC
+<details>
+<summary>Step-by-step guide</summary>
+</details>
+
+## Creating an AKS Cluster with IaC
+Description
+
 - See `README.md` and `definitions.md` in the `aks-terraform` directory.
-## Milestone 7 - Kubernetes Deployment to AKS
+<details>
+<summary>Step-by-step guide</summary>
+</details>
+
+
+
+## Kubernetes Deployment to AKS
+Description
+
+<details>
+<summary>Step-by-step guide</summary>
+
 ### Task 1 - Kubernetes manifest definition - Deployment
 - Create `application-manifest.yaml` and create a Deployment including `apiVersion`, `kind`, `metadata` and `spec`
 - Set the values of `apiVersion`, `kind` and `metadata` to `apps/v1`, `Deployment` and `name: flask-app-deployment` respectively.
@@ -233,7 +246,14 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Orders list: <br> <img src="./images/orders.png">
 - Add new order: <br> <img src="./images/add_new_order.png">
 - Updated orders list: <br> <img src="./images/order_added.png">
-## Milestone 8 - CI/CD Pipeline with Azure DevOps
+</details>
+
+## CI/CD Pipeline with Azure DevOps
+Description
+
+<details>
+<summary>Step-by-step guide</summary>
+
 ### Task 1 - Create an Azure DevOps Project
 - Login to Azure DevOps with AICore credentials
 - Create an Azure DevOps Project<br> <img src="./images/createnewdevopsproject.png">
@@ -312,8 +332,14 @@ Once everything is entered correctly, click `Add`.
 - Open a web browser and go to `127.0.0.1:5000` to view the web app on the AKS Cluster. Test the functionality of the web app, click on `Add New Order`. <br><img src="./images/clustertesting3.png">
 - Enter relevant data in each field and make a note of what was entered to search for it after clicking add order. Click `Add Order`. <br><img src="./images/clustertesting4.png">
 - Use the `Next` page button and search for the updated order entry in the list. <br><img src="./images/clustertesting5.png">
+</details>
 
-## Milestone 9 - AKS Cluster Monitoring
+## AKS Cluster Monitoring
+Description
+
+<details>
+<summary>Step-by-step guide</summary>
+
 ### Task 1 - Enable Container Insights for AKS
 - The cluster can be monitored on the azure portal. In the following image, it is possible to see the activity spiked in `Node pool CPU (max)`, `Node pool network in (max)` and `Node pool network out (max)`, all roughly at the same time. <br><img src="./images/clustermonitoring1.png"> At a glance this indicates the cluster is working well and is healthy, however, it doesn't offer any in-depth information. 
 - To enable `Container Insights`, go to `terraform_aks_cluster` in the azure portal: <br>`Home` > `All resources` > `terraform_aks_cluster`. <br><img src="./images/clustermonitoring2.png">
@@ -383,8 +409,13 @@ Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Se
 - Select the `CPU Usage Percentage` rule and click `Edit`. <br><img src="./images/alarms4-3.png"><br>
 - Select `Condition`, Change the threshold value to `80` and click `Review + save`.<br><img src="./images/alarms4-4.png"><br>
 - As before, confirmthe changes in the review screen and then click `Save`.<br><img src="./images/alarms4-5.png"><br>
+</details>
 
-## Milestone 10 - AKS Integration with Azure Key Vault for Secrets Management
+## AKS Integration with Azure Key Vault for Secrets Management
+Description
+<details>
+<summary>Step-by-step guide</summary>
+
 ### Task 1 - Create an Azure Key Vault
 - Navigate to the azure portal and search for `Key Vaults` in the search bar.<br><img src="./images/azurekeyvaults1.png"><br>
 - Click `+ Create` to create a key vault.<br><img src="./images/azurekeyvaults1-1.png"><br>
@@ -424,4 +455,13 @@ az role assignment create --role "Key Vault Secrets Officer" \
     <br><img src="./images/end-to-endtesting1.png"><br>
     <br><img src="./images/end-to-endtesting1-1.png"><br>
     <br><img src="./images/end-to-endtesting1-2.png"><br>
+</details>
 
+## Contributors 
+
+- [Maya Iuga](https://github.com/maya-a-iuga)
+- [Karl Moody](https://github.com/KarlosMoodios)
+
+## License
+
+This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
