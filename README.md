@@ -1,6 +1,6 @@
 # Web-App-DevOps-Project
 
-Welcome to the Web App DevOps Project repo! This application allows you to efficiently manage and track orders for a potential business. It provides an intuitive user interface for viewing existing orders and adding new ones.
+Welcome to the Web App DevOps Project repo! This application allows you to efficiently manage and track orders for a potential business. It provides an intuitive user interface for viewing existing orders and adding new ones.<br> This Repository was forked from [Maya Iuga](https://github.com/maya-a-iuga) upon request to make changes to the code and the development environment.
 
 ## Table of Contents
 
@@ -9,7 +9,7 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 - [Technology Stack](#technology-stack)
 - [Set up the environment](#set-up-the-environment)
 - [Version control](#version-control)
-- [Containerization with Docker](#containerization-with-docker)
+- [Containerisation with Docker](#containerisation-with-docker)
 - [Defining network services with IaC](#defining-network-services-with-iac)
 - [Defining an AKS Cluster with IaC](#defining-an-aks-cluster-with-iac)
 - [Creating an AKS Cluster with IaC](#creating-an-aks-cluster-with-iac)
@@ -49,20 +49,30 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
 
 ### Prerequisites
 
-For the application to succesfully run, you need to install the following packages:
+For the application to succesfully run, the following packages will be installed:
 
 - flask (version 2.2.2)
 - pyodbc (version 4.0.39)
 - SQLAlchemy (version 2.0.21)
 - werkzeug (version 2.2.3)
+- azure.identity (version 1.15.0)
+- azure.keyvault.secrets (version 4.7.0)
 
 ### Usage
 
-To run the application, you simply need to run the `app.py` script in this repository. Once the application starts you should be able to access it locally at `http://127.0.0.1:5000`. Here you will be meet with the following two pages:
+To run the application, you will need to create an AKS Cluster and assign it a `System Managed Identity`.<br>
+The `app.py` will not run locally. If you wish to test it you will need to download the following Docker Image using: <br>
+```docker pull karlosmoodios/order-tracking```<br>
+Then run the image using: <br>
+```docker run -d -p 5000:5000 karlosmoodios/order-tracking```<br>
+
+Once the application starts you will be able to access it locally at ```http://127.0.0.1:5000```. Here you will be met with the following two pages:
 
 1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
 
 2. **Add New Order Page:** Click on the "Add New Order" tab to access the order form. Complete all required fields and ensure that your entries meet the specified criteria.
+
+Once satisfied with the functionality of the application, clean up resources such as docker image and containers.<br> `docker stop <container_name>`<br> `docker rm <container_name>` <br> `docker rmi karlosmoodios/order-tracking`
 
 ## Technology Stack
 
@@ -73,12 +83,13 @@ To run the application, you simply need to run the `app.py` script in this repos
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
 ## Set up the environment
-Description
+To start this project, I began by setting up a github repository for the project supplied by the client and an Azure account to manage the Azure Pipeline required for the implementation of Continuous Integration and Continuous Deployment.
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Set up the environment: Step-by-step guide</summary>
 
 ### Task 1 - Set up GitHub
-- Fork the repository, including all branches from https://github.com/maya-a-iuga/Web-App-DevOps-Project.
+- Sign in to the github account that will be used to fork the repository.
+- Fork the repository, including all branches from ```https://github.com/maya-a-iuga/Web-App-DevOps-Project```.
 - Carefully read the README file to familiarise with the web application.
 ### Task 2 - Set up Azure
 - Contact AICore support to receive login credentials for Microsoft Azure.
@@ -86,14 +97,29 @@ Description
 </details>
 
 ## Version control
-Description
+I then proceeded to acquire all of the project files required to make the necessary changes Maya has asked me to complete for her company. <br> 
+An issue has been raised which requires the adding of a column to the `orders.html` page with a title of `Delivery Date`. 
+<details>
+<summary>Column Added</summary>
+<img src="./images/changesmade1.png">
+<img src="./images/changesmade1-1.png">
+</details>
+<br>
+
+The changes were later requested to be reverted as the delivery date of any order is managed by the delivery company. 
+<details>
+<summary>Column Removed</summary>
+<img src ="./images/changesreverted1.png"><br>
+<img src="./images/changesreverted1-1.png">
+</details>
+<br>
 
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Version Control: Step-by-step guide</summary>
 
 ### Task 1 - Clone the forked repository
 Use `git clone` to clone the repo from your repository on your gitHub account.
-- `git clone https://github.com/<username>/Web-App-DevOps-Project.git`
+- ```git clone https://github.com/<username>/Web-App-DevOps-Project.git```
 
 ### Task 2 - Create an Issue for the new column
 - GitHub doesn't turn on issues by default. So navigate to the repository settings, in the general tab search for issues and check the box.
@@ -135,11 +161,11 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Create a pull request and merge the `revert-delivery-date` branch into `main` branch. Approve and merge the pull request.
 </details>
 
-## Containerization with Docker
-Description
+## Containerisation with Docker
+I then containerised the application using Docker. The purpose of this is to create a Docker image to store the application in a flexible and consistent deployment solution which streamlines access and fosters a more agile and collaborative work environment. Now with htis, the image is available to be pulled and loaded in a matter of minutes; making it extremely portable and quickly deployable.<br><img src="./images/containerisationwithdocker.png">
 
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Containerisation with Docker: Step-by-step guide</summary>
 
 ### Build the Dockerfile
 - Build the Dockerfile 
@@ -156,9 +182,9 @@ Description
 - Build the Dockerfile into a Docker image using `docker build -t <name of the image> .`
 
 ### Run the Docker container locally
-- Use `docker run -d -p 5000:5000 <name of the image>`. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
+- Use ```docker run -d -p 5000:5000 <name of the image>```. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
 - Open a web browser and enter `http://127.0.0.1:5000` to access port 5000 on the local machine to interact with the web application in the container.
-- Confirm the appliocation works as intended.
+- Confirm the application works as intended.
 
 ### Tag and push the Docker image to DockerHub
 - Login to docker using the cli with `docker login`
@@ -179,30 +205,120 @@ Description
 </details>
 
 ## Defining network services with IaC
-Description
+I created a Networking module for the aks cluster which consists of a main.tf, variables.tf and outputs.tf. This module is responsible for handling all networking related workloads within the AKS Cluster.
 
-- See `README.md` and `definitions.md` in the `aks-terraform` directory.
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Defining network services with IaC: Step-by-step guide</summary>
+
+### Defining the resources for the network module.
+- networking-module
+    - main.tf
+        #### Base resources
+        - The base resources consist of the `resource_group` and the `virtual_network`.
+            <details>
+            <summary>See more</summary> 
+            <br><img src="./images/networking-base-resources-main.tf.png">
+            <br><img src="./images/networking-base-resources-main.tf-1.png">
+            </details><br>
+
+        #### Subnets
+        Each subnet has a name unique to itself, attaches to the resource group and virtual network. Also, they use different address spaces.
+        <details>
+        <summary>See more</summary> 
+        <br><img src="./images/networking-subnets-main.tf.png">
+        <br><img src="./images/networking-subnets-main.tf-1.png">
+        </details><br>
+
+        #### Network/Security rules
+        The network and security rules, in this instance, are made up of the Network Security Group (NSG), a rule for inbound traffic to kube-apiserver and another rule to allow inbound traffic using SSH.
+        <details>
+        <summary>See more</summary> 
+        <br><img src="./images/networking-nsg-rules-main.tf.png">
+        <br><img src="./images/networking-nsg-rules-main.tf-1.png">
+        </details><br>
+    
+
+    ### Defining the variables for the network module.
+    - variables.tf - Defines the variables used within the networking module. Each variable has a description, type and default value.
+        <details>
+        <summary>See more</summary>
+        These variables will set the:
+        <br><img src="./images/networking-variables.tf.png">
+        <br><img src="./images/networking-variables.tf-1.png">
+        </details>
+
+    ### Defining the outputs from the network module
+    - outputs.tf - This is where outputs are defined. Each output has a description and a value and will contribute to the `aks-cluster-module > variables.tf` file.
+        <details>
+        <summary>See more</summary> 
+        <br><img src="./images/networking-outputs.tf.png">
+        <br><img src="./images/networking-outputs.tf-1.png">
+        </details><br>
+
+    - Once everything has been provisioned correctly, run `terraform init` while in the directory for the networking module to initialise this module.
 </details>
 
 ## Defining an AKS Cluster with IaC
-Description
+I created an AKS Cluster module for the aks cluster which consists of a main.tf, variables.tf and outputs.tf. This module is responsible for handling all cluster related workloads within the AKS Cluster.
 
-- See `README.md` and `definitions.md` in the `aks-terraform` directory.
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Defining an AKS Cluster with IaC: Step-by-step guide</summary>
+
+### Defining the resources for the cluster module
+- `aks-cluster-module`
+    - `main.tf`
+        - `azurerm_kubernetes_cluster, aks_cluster` - This resource defines the construction of the AKS cluster.
+            <details>
+            <summary>See more</summary> 
+            It needs:
+            <img src="./images/aks-cluster-module-main.tf.png">
+            <img src="./images/aks-cluster-module-main.tf-1.png">
+            </details><br>
+
+    - `variables.tf` - The variables for the `aks-cluster-module` consist of newly defined variables as well as some variables provided by the networking module. The newly defind variables each have a description, default value and a type.
+        <details>
+        <summary>See more</summary> 
+        The variables are as follows:
+        <br><img src="./images/aks-cluster-module-variables.tf.png">
+        <br><img src="./images/aks-cluster-module-variables.tf-1.png">
+        <br><img src="./images/aks-cluster-module-variables.tf-2.png">
+        </details><br>
+
+    - outputs.tf - These outputs are going to be used by the main.tf file in the parent directory of both modules. (`aks-terraform`) 
+        <details>
+        <summary>See more</summary> 
+        The outputs are:
+        <br><img src="./images/aks-cluster-module-outputs.tf.png">
+        <br><img src="./images/aks-cluster-module-outputs.tf-1.png">
+        </details><br>
 </details>
 
 ## Creating an AKS Cluster with IaC
-Description
+In this module, the `aks-cluster-module` and the `networking-module` will be pulled together and used to create an AKS Cluster. After running `terraform init` in the `aks-terraform` module, the cluster will be created with all its dependencies and Microsoft Azure will reflect this: <br><img src="./images/aksclustercreated.png">
 
-- See `README.md` and `definitions.md` in the `aks-terraform` directory.
+- To see more information on the cluster and its creation, click [here](./aks-terraform/README.md).
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Creating an AKS Cluster with IaC: Step-by-step guide</summary>
+
+### Defining the resources for aks-terraform
+- `aks-terraform`
+    
+    - `main.tf` - This is the main.tf file where the aks-cluster-module and networking-module will be utilised to create an AKS cluster using Terraform. 
+        <details>
+        <summary>See more</summary>
+        In `main.tf`, we will need to:
+        <br><img src="./images/aks-terraform-main.tf.png">
+        <br><img src="./images/aks-terraform-main.tf-1.png">
+        </details><br>
+    
+    - `variables.tf` - This is where the boiler plate code for the variables marked as sensitive data will be channeled through. They have a setting called `sensitive` which is set to `true` to ensure they remain hidden throughout the cluster and its applications.
+        <details>
+        <summary>See more</summary> 
+        For this project the sensitive data variables are:
+        <br><img src="./images/aks-terraform-variables.tf.png">
+        <br><img src="./images/aks-terraform-variables.tf-1.png">
+        </details>
 </details>
-
-
 
 ## Kubernetes Deployment to AKS
 Description

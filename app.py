@@ -25,11 +25,11 @@ secret3 = secret_client.get_secret("Username")
 secret4 = secret_client.get_secret("Password")
 
 # Database connection 
-server = secret1.value
+server   = secret1.value
 database = secret2.value
 username = secret3.value
 password = secret4.value
-driver= '{ODBC Driver 18 for SQL Server}'
+driver   = '{ODBC Driver 18 for SQL Server}'
 
 # Create the connection string
 connection_string=f'Driver={driver};\
