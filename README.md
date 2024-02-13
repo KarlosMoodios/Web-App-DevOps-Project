@@ -62,11 +62,19 @@ For the application to succesfully run, the following packages will be installed
 
 To run the application, you will need to create an AKS Cluster and assign it a `System Managed Identity`.<br>
 The `app.py` will not run locally. If you wish to test it you will need to download the following Docker Image using: <br>
-```docker pull karlosmoodios/order-tracking```<br>
-Then run the image using: <br>
-```docker run -d -p 5000:5000 karlosmoodios/order-tracking```<br>
+```sh
+docker pull karlosmoodios/order-tracking
+```
+Then run the image using:
+```sh
+docker run -d -p 5000:5000 karlosmoodios/order-tracking
+```
 
-Once the application starts you will be able to access it locally at ```http://127.0.0.1:5000```. Here you will be met with the following two pages:
+Once the application starts you will be able to access it locally at 
+```
+http://127.0.0.1:5000
+```
+Here you will be met with the following two pages:
 
 1. **Order List Page:** Navigate to the "Order List" page to view all existing orders. Use the pagination controls to navigate between pages.
 
@@ -89,7 +97,10 @@ To start this project, I began by setting up a github repository for the project
 
 ### Task 1 - Set up GitHub
 - Sign in to the github account that will be used to fork the repository.
-- Fork the repository, including all branches from ```https://github.com/maya-a-iuga/Web-App-DevOps-Project```.
+- Fork the repository, including all branches from 
+```
+https://github.com/maya-a-iuga/Web-App-DevOps-Project
+```
 - Carefully read the README file to familiarise with the web application.
 ### Task 2 - Set up Azure
 - Contact AICore support to receive login credentials for Microsoft Azure.
@@ -119,7 +130,9 @@ The changes were later requested to be reverted as the delivery date of any orde
 
 ### Task 1 - Clone the forked repository
 Use `git clone` to clone the repo from your repository on your gitHub account.
-- ```git clone https://github.com/<username>/Web-App-DevOps-Project.git```
+```sh
+git clone https://github.com/<username>/Web-App-DevOps-Project.git
+```
 
 ### Task 2 - Create an Issue for the new column
 - GitHub doesn't turn on issues by default. So navigate to the repository settings, in the general tab search for issues and check the box.
@@ -128,7 +141,11 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 
 ### Task 3 - Create features branch
 - Create a new branch on the local repository named `feature/add-delivery-date`.
-- Use `git checkout -b feature/add-delivery-date` from the main branch. This will take you from the main branch, copy everything in the main branch and checkout to the new branch. The `-b` flag tells git to run `git branch` before `git checkout`.
+- While in the main branch, use:
+```
+git checkout -b feature/add-delivery-date
+```  
+This will move you from the `main` branch to the `feature/add-delivery-date`, copying everything in the main branch and pasting it (checkout) to the new branch. The `-b` flag tells git to run `git branch` before `git checkout`.
 
 ### Task 4 - Make code changes
 - Make code changes to app.py and orders.html to reflect the new column across the web application.
@@ -142,7 +159,10 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 
 ### Task 5 - Push changes to remote branch
 - Now the column has been added, push the changes to the remote origin. 
-- `git push --set-upstream origin feature/add-delivery-date` will create a new branch on the remote repository on GitHub.
+- This command will create a new branch on the remote repository on GitHub and push to it:
+```sh
+git push --set-upstream origin feature/add-delivery-date
+```
 
 ### Task 6 - Create pull request
 - Create a pull request to pull the new features branch into the main branch on the forked repository to initiate proceedings to merge the two together.
@@ -153,11 +173,16 @@ Use `git clone` to clone the repo from your repository on your gitHub account.
 - Delete the branch once its compeleted.
 
 ### Task 8 - Revert changes
-- Create a new branch `called revert-deliver-date` while in the `main` branch.
-- Use `git checkout -b revert-delivery-date`
+- Create a new branch called `revert-deliver-date` while in the `main` branch.
+```sh
+git checkout -b revert-delivery-date
+```
 - Use `git log` to find the commit hash of the change to revert.
 - Use `git revert <commit-hash>` to undo the commit
-- Push the changes to the remote branch using `git push --set-upstream origin revert-delivery-date`
+- Push the changes to the remote branch using: 
+```sh
+git push --set-upstream origin revert-delivery-date
+```
 - Create a pull request and merge the `revert-delivery-date` branch into `main` branch. Approve and merge the pull request.
 </details>
 
@@ -179,29 +204,50 @@ I then containerised the application using Docker. The purpose of this is to cre
     - CMD - Startup commands for container
 
 ### Build the Docker image
-- Build the Dockerfile into a Docker image using `docker build -t <name of the image> .`
+- Throughout the next steps, whenever a command is shown inside `< >`, such as `<name_of_the_image>` or `<docker_hub_username>`, replace this with the correct or desired information.
+- Build the Dockerfile into a Docker image using:
+```sh
+docker build -t <name_of_the_image> .
+```
+
 
 ### Run the Docker container locally
-- Use ```docker run -d -p 5000:5000 <name of the image>```. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
+- Use the following command top run the Docker container.. The `-d` flag detaches the docker container from the CLI so you can still run docker commands, and `-p` publishes a list of all the containers ports to the host.
+```sh
+docker run -d -p 5000:5000 <name_of_the_image>
+```
 - Open a web browser and enter `http://127.0.0.1:5000` to access port 5000 on the local machine to interact with the web application in the container.
 - Confirm the application works as intended.
 
 ### Tag and push the Docker image to DockerHub
 - Login to docker using the cli with `docker login`
-- Use `docker tag <name of the image> <docker-hub-username>/<image-name>:<tag>` to tag the Docker image with the appropriate information.
-- Then use `docker push <username>/<name of the image>:<tag>`
+- Use the following command to tag the Docker image with the appropriate information:
+```sh
+docker tag <name of the image> <docker_hub_username>/<name_of_the_image>:<tag>
+```
+- Then push the image to your Docker Hub account. 
+```sh
+docker push <docker_hub_username>/<name_of_the_image>:<tag>
+```
 
 ### Confirm push was successful
 - Login to your Docker Hub account through a web browser to confirm that your docker image was successfully pushed to Docker Hub
-- Stop the Docker container on your local system, using `docker stop <name>`. To see the list of all containers use `docker ps -a`. 
-- Once stopped, get the Id or the name of the container to delete and then Use `docker rm <name>` or `docker rm <id>` to remove it completely.
-- Pull the docker image from docker hub and test that it works as expected. Use `docker pull <username>/<name of the image>:<tag>`.
-- Use `docker run -d -p 5000:5000 <username>/<name of the image>` to run the image from Docker Hub and check the image works the same.
+- Stop the Docker container on your local system, using `docker stop <container_name>`. To see the list of all containers, including inactive ones, use `docker ps -a`. 
+- Once stopped, use the ID or the name of the container to delete it. 
+- Then Use `docker rm <container_name>` or `docker rm <container_id>` to remove it completely.
+- Pull the docker image from docker hub and test that it works as expected. Use: 
+```sh
+docker pull <docker_hub_username>/<name_of_the_image>:<tag>
+```
+- Run the image from Docker Hub and check the image works the same using:
+```sh
+docker run -d -p 5000:5000 <docker_hub_username>/<name_of_the_image>
+```
 - Stop the container and remove the container. 
 
 ### Task 6 - Cleanup
 - Delete any containers created during these tasks using the methods in task 5.
-- Remove both images from your system using `docker rmi <image id>`. To see a list of images use `docker images`.
+- Remove both images from your system using `docker rmi <image_id>`. To see a list of images use `docker images`.
 </details>
 
 ## Defining network services with IaC
@@ -255,7 +301,10 @@ I created a Networking module for the aks cluster which consists of a main.tf, v
         <br><img src="./images/networking-outputs.tf-1.png">
         </details><br>
 
-    - Once everything has been provisioned correctly, run `terraform init` while in the directory for the networking module to initialise this module.
+- Once everything has been provisioned correctly, run the following while in the directory for the `networking-module` to initialise this module.
+    ```
+    terraform init
+    ``` 
 </details>
 
 ## Defining an AKS Cluster with IaC
@@ -291,6 +340,10 @@ I created an AKS Cluster module for the aks cluster which consists of a main.tf,
         <br><img src="./images/aks-cluster-module-outputs.tf.png">
         <br><img src="./images/aks-cluster-module-outputs.tf-1.png">
         </details><br>
+- Once everything has been provisioned correctly, run the following while in the directory for the `aks-cluster-module` to initialise this module.
+    ```
+    terraform init
+    ``` 
 </details>
 
 ## Creating an AKS Cluster with IaC
@@ -321,10 +374,10 @@ In this module, the `aks-cluster-module` and the `networking-module` will be pul
 </details>
 
 ## Kubernetes Deployment to AKS
-Description
-
+I then created the `application-manifest.yaml` file to set up Kubernetes deployment for the applcation. There is a `Deployment` and a `Service` in this manifest.
+<br><img src="./images/application-manifest.yaml.png">
 <details>
-<summary>Step-by-step guide</summary>
+<summary>Kubernetes Deployment to AKS: Step-by-step guide</summary>
 
 ### Task 1 - Kubernetes manifest definition - Deployment
 - Create `application-manifest.yaml` and create a Deployment including `apiVersion`, `kind`, `metadata` and `spec`
@@ -345,8 +398,18 @@ Description
     - Set the field `selector:` with the field `app:` to `flask-app`. This guarantees that traffic is efficiently directed to the correct pods when internal ccommunication happens within the cluster.
     - Configure the `ports` field, setting the `protocol` to `TCP`, and the `port` to `80` for internal communications between nodes. Additionally, set the targetPort to 5000 which exposes the same port as the container. This will enable connection to the application on the cluster from the local machine.
 ### Task 3 - Deploying Kubernetes manifests to AKS
-- `kubectl config get-contexts` will show a list of the contexts/clusters available. If the current context is not the AKS cluster, use `kubectl config set-context <name_of_cluster>` to change into the correct one to ensure the deployment is done in the intended environment.
-- Now use `kubectl apply -f application-manifest.yaml` to apply the application.
+- To see a list of the contexts/clusters available, use:
+```sh
+kubectl config get-contexts
+``` 
+If the current context is not the AKS cluster, use the following command to change into the correct one to ensure the deployment is done in the intended environment.
+```sh
+kubectl config set-context <name_of_cluster>
+``` 
+- To apply the application use 
+```sh
+kubectl apply -f application-manifest.yaml
+```
 - Confirm that the pods and services were correctly deployed using `kubectl get pods` and `kubectl get services`. 
 
 ### Task 4 - Testing and validating deployments on AKS
@@ -354,14 +417,27 @@ Description
 - If correctly deployed You will see something like the following images for each command:
     - `kubectl get pods`: <br> <img src="./images/kubectl_get_pods.png">
     - `kubectl get services`: <br> <img src="./images/kubectl_get_services.png">
-- To test the situation "if a pod goes down" and that another one will be created use `kubectl delete pod <name_of_pod>` It will delete the pod with that name and then create another in its place.<br><img src="./images/deleting_a_pod.png">
+- To test the situation: "if a pod goes down" checking that another one will be created, use:
+```sh
+kubectl delete pod <name_of_pod>
+``` 
+It will delete the pod with that name and then create another in its place.<br><img src="./images/deleting_a_pod.png">
+
 #### Validating Deployments
 - Verify the health and status of the pods and services.
-- Run `kubectl port-forward <pod-name> 5000:5000` to establish a connection to your the desired pod on the local machine. This will enable access to the application through the local host at port 5000.
-- Open a web browser and enter into the URL field: `http://127.0.0.1:5000`
-- Orders list: <br> <img src="./images/orders.png">
-- Add new order: <br> <img src="./images/add_new_order.png">
-- Updated orders list: <br> <img src="./images/order_added.png">
+- Run the following command to establish a connection to your the desired pod on the local machine.
+    ```sh
+    kubectl port-forward <pod-name> 5000:5000
+    ```
+    This will enable access to the application through the local host at port 5000.
+    
+- Open a web browser and enter into the URL field: 
+    ```
+    http://127.0.0.1:5000
+    ```
+- <details><summary>Orders list:</summary> <img src="./images/orders.png"></details>
+- <details><summary>Add new order:</summary> <img src="./images/add_new_order.png"></details>
+- <details><summary>Updated orders list:</summary> <img src="./images/order_added.png"></details>
 </details>
 
 ## CI/CD Pipeline with Azure DevOps
