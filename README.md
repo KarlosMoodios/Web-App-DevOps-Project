@@ -389,7 +389,7 @@ In this module, the `aks-cluster-module` and the `networking-module` will be pul
 </details>
 
 ## Kubernetes Deployment to AKS
-Kubernetes automates tasks of container management, including built-in commands for deploying applications, rolling out chaanges to applications, scaling applications up or down to fit changing needs, monitoring applications and more, making it easier to manage applications. Having Kubernetes on an AKS cluster reduces the complexity of deployment and core management tasks such as upgrade coordination. The Azure platform manages the control plane.
+Kubernetes is an orchestration tool for containers which automates tasks of container management, including built-in commands for deploying applications, rolling out chaanges to applications, scaling applications up or down to fit changing needs, monitoring applications and more, making it easier to manage applications. Having Kubernetes on an AKS cluster reduces the complexity of deployment and core management tasks such as upgrade coordination. The Azure platform manages the control plane.
 
 I then created the `application-manifest.yaml` file to set up Kubernetes deployment for the applcation. There is a `Deployment` and a `Service` in this manifest.
 <br><img src="./images/application-manifest.yaml.png">
