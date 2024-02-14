@@ -91,7 +91,10 @@ Once satisfied with the functionality of the application, clean up resources suc
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
 ## Set up the environment
-To start this project, I began by setting up a github repository for the project supplied by the client and an Azure account to manage the Azure Pipeline required for the implementation of Continuous Integration and Continuous Deployment.
+To start this project, I began by setting up a github repository for the project supplied by the client and an Azure account to manage the Azure Pipeline required for the implementation of Continuous Integration and Continuous Deployment. <br>
+GitHub provides a spectacular environment where developers can build code, track changes and innovate solutions to problems that might arise in the development process, in a collaborative environment.<br>
+Microsoft Azure is a cloud platform that offers 200+ products and services designed to help bring new solutions to life. You can build, run and manage applcations accross multiple clouds, on premesis and at the edge with whatever tools and frameworks the applications desire.
+<br><img src="./images/azuregithub.png">
 <details>
 <summary>Set up the environment: Step-by-step guide</summary>
 
@@ -124,6 +127,9 @@ The changes were later requested to be reverted as the delivery date of any orde
 <img src="./images/changesreverted1-1.png">
 </details>
 <br>
+Version control in GitHub is extremely useful for reverting changes made to a previous backup. It saves time and enables the developers to quickly get back to a point where they can either continue coding, add new code or change existing code, all without changing the main branch. Once everything looks good, pull requests can be made and are reviewed by other developers to ensure there are no conflicts before merging the new changes into the main branch of the repository.
+
+<br>
 
 <details>
 <summary>Version Control: Step-by-step guide</summary>
@@ -142,9 +148,11 @@ git clone https://github.com/<username>/Web-App-DevOps-Project.git
 ### Task 3 - Create features branch
 - Create a new branch on the local repository named `feature/add-delivery-date`.
 - While in the main branch, use:
-```
+
+```sh
 git checkout -b feature/add-delivery-date
-```  
+```
+
 This will move you from the `main` branch to the `feature/add-delivery-date`, copying everything in the main branch and pasting it (checkout) to the new branch. The `-b` flag tells git to run `git branch` before `git checkout`.
 
 ### Task 4 - Make code changes
@@ -187,7 +195,7 @@ git push --set-upstream origin revert-delivery-date
 </details>
 
 ## Containerisation with Docker
-I then containerised the application using Docker. The purpose of this is to create a Docker image to store the application in a flexible and consistent deployment solution which streamlines access and fosters a more agile and collaborative work environment. Now with htis, the image is available to be pulled and loaded in a matter of minutes; making it extremely portable and quickly deployable.<br><img src="./images/containerisationwithdocker.png">
+I then containerised the application using Docker. The purpose of this is to create a Docker image to store the application in a flexible and consistent deployment solution which streamlines access and fosters a more agile and collaborative work environment. Now with this, the image is available to be pulled and loaded in a matter of minutes; making it extremely portable and quickly deployable.<br><img src="./images/containerisationwithdocker.png">
 
 <details>
 <summary>Containerisation with Docker: Step-by-step guide</summary>
@@ -251,7 +259,14 @@ docker run -d -p 5000:5000 <docker_hub_username>/<name_of_the_image>
 </details>
 
 ## Defining network services with IaC
-I created a Networking module for the aks cluster which consists of a main.tf, variables.tf and outputs.tf. This module is responsible for handling all networking related workloads within the AKS Cluster.
+Using IaC (Infrastructure as Code) allows future developers to return to desired specification configurations stored as code, which provides: 
+- a decreased risk of manually deploying repeat code and humans making mistakes, 
+- stronger security with faster recovery, faster deployment, 
+- improved accountability, 
+- increased operational efficiency with shorter development lifecycles 
+- more financial savings.<br>
+
+I created a Networking module for the AKS Cluster which consists of a main.tf, variables.tf and outputs.tf. This module is responsible for handling all networking related workloads within the AKS Cluster.
 
 <details>
 <summary>Defining network services with IaC: Step-by-step guide</summary>
@@ -374,6 +389,8 @@ In this module, the `aks-cluster-module` and the `networking-module` will be pul
 </details>
 
 ## Kubernetes Deployment to AKS
+Kubernetes automates tasks of container management, including built-in commands for deploying applications, rolling out chaanges to applications, scaling applications up or down to fit changing needs, monitoring applications and more, making it easier to manage applications. Having Kubernetes on an AKS cluster reduces the complexity of deployment and core management tasks such as upgrade coordination. The Azure platform manages the control plane.
+
 I then created the `application-manifest.yaml` file to set up Kubernetes deployment for the applcation. There is a `Deployment` and a `Service` in this manifest.
 <br><img src="./images/application-manifest.yaml.png">
 <details>
@@ -441,6 +458,8 @@ It will delete the pod with that name and then create another in its place.<br><
 </details>
 
 ## CI/CD Pipeline with Azure DevOps
+Azure Pipelines work hand-in-hand with github repositories once they are configured to do so. This means that whenever the main branch is updated through any means, the Azure Pipeline will re-run the job making sure it is continuously integrated and deployed to the AKS Cluster. 
+
 I then encapsualted all of this into a pipeline to facilitate CI/CD principals. This enables seamless updates for the application every time the main branch of the GitHub repository is updated.<br><img src="./images/pipeline.png">
 
 <details>
@@ -531,6 +550,8 @@ Once everything is entered correctly, click `Add`.
 </details>
 
 ## AKS Cluster Monitoring
+Cluster monitoring is a useful tool for keeping track of any problems that arise within the cluster. If you are reaching disk space usage limits its a great idea to have some prewarning so that the risk can be mitigated before the cluster suffers from downtime. The same goes for if a pod goes down, without cluster monitoring it may not always be apparant something has gone wrong. The monitoring gives the admins a chance to fix things before they break and maximise the uptime of the application.
+
 To effectively monitor the cluster health and all of its elements, I set up cluster monitoring. It tracks the condition of the cluster services, provides real-time updates and logs everything to enable analysis of data from any time period 30 minutes to 30 days, with the possibility to customise time frames for specific search purposes.
 <br><img src="./images/clustermetrics5-1.png">
 
@@ -609,6 +630,8 @@ Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Se
 </details>
 
 ## AKS Integration with Azure Key Vault for Secrets Management
+Azure secrets offer a secure environment to store sensitive data such as passwords, or database configurations. Any data that admins don't want to share with the public can be stored as a secret in a key vault and only accessed by the developers responsible for maintaing code relative to their access levels.
+
 To keep the application secure, I implemented an Azure Key Vault to store all of the sensitive data for the application. This way the code throughout the application can use variables stored behind a protected layer of security instead of hard coded values.
 <br><img src="./images/azurekeyvaults6-2.png"><br>
 
