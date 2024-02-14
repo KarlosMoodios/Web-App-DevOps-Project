@@ -441,10 +441,10 @@ It will delete the pod with that name and then create another in its place.<br><
 </details>
 
 ## CI/CD Pipeline with Azure DevOps
-Description
+I then encapsualted all of this into a pipeline to facilitate CI/CD principals. This enables seamless updates for the application every time the main branch of the GitHub repository is updated.<br><img src="./images/pipeline.png">
 
 <details>
-<summary>Step-by-step guide</summary>
+<summary>CI/CD Pipeline with Azure DevOps: Step-by-step guide</summary>
 
 ### Task 1 - Create an Azure DevOps Project
 - Login to Azure DevOps with AICore credentials
@@ -520,17 +520,22 @@ Once everything is entered correctly, click `Add`.
 - A screenshot of the Docker Image being built. <br><img src="./images/rundeploymentpipeline4.png">
 - Job posting of the completion of deployment to the AKS Cluster. <br><img src="./images/rundeploymentpipeline5.png">
 - Open a terminal and type `kubectl get pods`.<br><img src="./images/clustertesting1.png">
-- Then type `kubectl port-forward <name_of_pod> 5000:5000` <br><img src="./images/clustertesting2.png">
+- Then type 
+    ```sh
+    kubectl port-forward <name_of_pod> 5000:5000
+    ``` 
+<br><img src="./images/clustertesting2.png">
 - Open a web browser and go to `127.0.0.1:5000` to view the web app on the AKS Cluster. Test the functionality of the web app, click on `Add New Order`. <br><img src="./images/clustertesting3.png">
 - Enter relevant data in each field and make a note of what was entered to search for it after clicking add order. Click `Add Order`. <br><img src="./images/clustertesting4.png">
 - Use the `Next` page button and search for the updated order entry in the list. <br><img src="./images/clustertesting5.png">
 </details>
 
 ## AKS Cluster Monitoring
-Description
+To effectively monitor the cluster health and all of its elements, I set up cluster monitoring. It tracks the condition of the cluster services, provides real-time updates and logs everything to enable analysis of data from any time period 30 minutes to 30 days, with the possibility to customise time frames for specific search purposes.
+<br><img src="./images/clustermetrics5-1.png">
 
 <details>
-<summary>Step-by-step guide</summary>
+<summary>AKS Cluster Monitoring: Step-by-step guide</summary>
 
 ### Task 1 - Enable Container Insights for AKS
 - The cluster can be monitored on the azure portal. In the following image, it is possible to see the activity spiked in `Node pool CPU (max)`, `Node pool network in (max)` and `Node pool network out (max)`, all roughly at the same time. <br><img src="./images/clustermonitoring1.png"> At a glance this indicates the cluster is working well and is healthy, however, it doesn't offer any in-depth information. 
@@ -542,7 +547,7 @@ Description
 ##### Custom Monitoring
 - Container insights offers a customised monitoring experience which is built upon the Azure Monitor data platform and standard features. Common customisations include integrating Grafana and prometheus. <br> 
     - Grafana is an open-source softweare which enables you to query, visualise, alert on and explore your metrics, logs and traces wherever they are stored. Grafana OSS provides you with tools to turn your time-series database (TSDB) data into insightful graphs and visualisations.<br> 
-    - Prometheus is an open-source technology which is designed to provide monitoring and alerting functionality for cloud-native environments, including Kubernetes. It is capable of collecting and storing metrics as time-series data and recording that information with a timestamp. It can also collect and record labels, which are optional key-value pairs. <br>Unfortuantely, due to the configuration fo this cluster, Grafana and Prometheus are not able to beused with this cluster.
+    - Prometheus is an open-source technology which is designed to provide monitoring and alerting functionality for cloud-native environments, including Kubernetes. It is capable of collecting and storing metrics as time-series data and recording that information with a timestamp. It can also collect and record labels, which are optional key-value pairs. <br>Unfortuantely, due to the configuration for this cluster, Grafana and Prometheus are not able to beused with this cluster.
 ### Task 2 - Create Metrics Explorer Charts
 - Custom Metrics Charts can be created to be able to monitor specific aspects of the cluster. To do so, use the navigation pane on the left while inside the `terraform_aks_cluster` and select `Metrics`. Then select `New chart`. <br><img src="./images/clustermetrics1.png">
     - In the new chart that appears, name the chart `Average CPU Usage`, then select the Metric drop down menu and choose `CPU Usage Percentage`. <br><img src="./images/clustermetrics1-1.png">
@@ -604,9 +609,11 @@ Go to `Home` > `terraform_aks_cluster` > `Alerts`, select the `Memory Working Se
 </details>
 
 ## AKS Integration with Azure Key Vault for Secrets Management
-Description
+To keep the application secure, I implemented an Azure Key Vault to store all of the sensitive data for the application. This way the code throughout the application can use variables stored behind a protected layer of security instead of hard coded values.
+<br><img src="./images/azurekeyvaults6-2.png"><br>
+
 <details>
-<summary>Step-by-step guide</summary>
+<summary>AKS Integration with Azure Key Vault for Secrets Management: Step-by-step guide</summary>
 
 ### Task 1 - Create an Azure Key Vault
 - Navigate to the azure portal and search for `Key Vaults` in the search bar.<br><img src="./images/azurekeyvaults1.png"><br>
@@ -624,14 +631,27 @@ Description
 - Enter the secret name, the secret and click `Create`.<br><img src="./images/azurekeyvaults3-1.png"><br>
 - Once added the secrets should look similar to this: <br><img src="./images/azurekeyvaults3-2.png"><br>
 ### Task 4 - Enable Managed Identity for AKS
-- To enable managed identity for an existing AKS cluster, use `az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity`, replacing `<resource-group>` with the resource group associated with the cluster and `<aks-cluster-name>` with the name of the cluster. A prompt will appear requeesting confirmation on performing the action, type `y` and press enter. You can make a note of your clientId here or do it in the next step.<br><img src="./images/azurekeyvaults4.png"><br>
-- The command to retrieve information about the managed identity is: `az aks show --resource-group <resource-group> --name <aks-cluster-name> --query identityProfile`<br><img src="./images/azurekeyvaults4-1.png"><br>
+- To enable managed identity for an existing AKS cluster, use: 
+    ```sh
+    az aks update --resource-group <resource-group> --name <aks-cluster-name> --enable-managed-identity
+    ``` 
+    replacing `<resource-group>` with the resource group associated with the cluster and `<aks-cluster-name>` with the name of the cluster. A prompt will appear requeesting confirmation on performing the action, type `y` and press enter. You can make a note of your clientId here or do it in the next step.<br><img src="./images/azurekeyvaults4.png"><br>
+- The command to retrieve information about the managed identity is: 
+    ```sh
+    az aks show --resource-group <resource-group> --name <aks-cluster-name> --query identityProfile
+    ```
+    <img src="./images/azurekeyvaults4-1.png"><br>
+
 ### Task 5 - Assign Permissions to Managed Identity
-- Use the following command to assign a RBAC role to the managed identity. `
-az role assignment create --role "Key Vault Secrets Officer" \
-  --assignee <managed-identity-client-id> \
-  --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}` <br><img src="./images/azurekeyvaults5.png"><br>
-    - Replace `<managed-identity-client-id>` with the managed identity client id. In `--scope`, replace `{subscription-id}`, `{resource-group}`, `{key-vault-name}` with their corresponding values.
+- Use the following command to assign a RBAC role to the managed identity: 
+    ```sh
+    az role assignment create --role "Key Vault Secrets Officer" \
+    --assignee <managed-identity-client-id> \
+    --scope /subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.KeyVault/vaults/{key-vault-name}
+    ``` 
+    <img src="./images/azurekeyvaults5.png"><br>
+    Replace `<managed-identity-client-id>` with the managed identity client id. In `--scope`, replace `{subscription-id}`, `{resource-group}`, `{key-vault-name}` with their corresponding values.
+
 ### Task 6 - Update the Application Code
 - Update the `requirements.txt` to add `azure.identity` and `azure.keyvault.secrets` when building the Docker image. <br><img src="./images/azurekeyvaults6.png"><br>
 - Update `app.py` to access the secrets in the Key Vault. 
@@ -642,7 +662,10 @@ az role assignment create --role "Key Vault Secrets Officer" \
 - Once completed, the protected code will look like this: <br><img src="./images/azurekeyvaults6-2.png"><br>
 ### Task 7 - End-to-End Testing in AKS
 - To confirm the changes have been successful, use git to add, commit and push the changes to the GitHub repository. Any updates on the main branch will trigger the Azure Pipeline to run. 
-    - Then use `kubectl port-forward <name of pod> 5000:5000`. 
+    - Then port forward the application when the pipeline finishing running the CI/CD:
+    ```sh
+    kubectl port-forward <name of pod> 5000:5000
+    ``` 
     - Use a browser as before to connect to `127.0.0.1:5000` and confirm that the application is working as expected.
     <br><img src="./images/end-to-endtesting1.png"><br>
     <br><img src="./images/end-to-endtesting1-1.png"><br>
